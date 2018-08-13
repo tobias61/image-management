@@ -1,0 +1,32 @@
+.userPopover {
+    background-color: #3f5161 !important
+}
+
+.groupheader {
+    color: black !important;
+    background-color: transparent !important;
+    border: none !important;
+    text-transform: uppercase !important;
+    font-size: 0.875rem !important;
+}
+
+.projects {
+    cursor: pointer;
+    margin: 10px;
+    border: 1px solid #E5E5E5 !important;
+    border-radius: 4px !important;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, .05) !important;
+    transition: box-shadow 0.4s, background-color 0.3s !important;
+}
+
+.projects:hover {
+    box-shadow: 5px 0px 20px rgba(0, 0, 0, .2) !important;
+}
+
+.foldericon {
+    color: #BFBFBF;
+}
+
+.directoryinput {
+    cursor: pointer;
+}

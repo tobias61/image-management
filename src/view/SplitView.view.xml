@@ -1,0 +1,4 @@
+<!DOCTYPE xml>
+<core:View xmlns:core="sap.ui.core" xmlns="sap.m" height="100%">
+    <SplitContainer id="splitContainer" mode="ShowHideMode" />
+</core:View>

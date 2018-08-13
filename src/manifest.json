@@ -1,0 +1,139 @@
+{
+    "_version": "1.8.0",
+    "sap.app": {
+        "_version": "1.2.0",
+        "id": "geosort",
+        "type": "application",
+        "applicationVersion": {
+            "version": "1.0.0"
+        },
+        "title": "{{APP_TITLE}}"
+    },
+    "sap.ui": {
+        "_version": "1.3.0",
+        "technology": "UI5",
+        "deviceTypes": {
+            "desktop": true,
+            "tablet": true,
+            "phone": false
+        },
+        "supportedThemes": [
+            "sap_belize"
+        ]
+    },
+    "sap.ui5": {
+        "handleValidation": true,
+        "rootView": {
+            "type": "XML",
+            "viewName": "geosort.view.Main"
+        },
+        "dependencies": {
+            "minUI5Version": "1.40.0",
+            "libs": {
+                "sap.m": {
+                    "minVersion": ""
+                }
+            }
+        },
+        "contentDensities": {
+            "compact": true,
+            "cozy": false
+        },
+        "models": {
+            "i18n": {
+                "type": "sap.ui.model.resource.ResourceModel",
+                "settings": {
+                    "bundleName": "geosort.i18n.i18n"
+                }
+            }
+        },
+        "routing": {
+            "config": {
+                "routerClass": "sap.m.routing.Router",
+                "viewType": "XML",
+                "viewPath": "geosort.view",
+                "controlId": "splitContainer",
+                "controlAggregation": "detailPages",
+                "clearTarget": true
+            },
+            "routes": [{
+                    "pattern": "home",
+                    "name": "home",
+                    "target": "home"
+                },
+                {
+                    "pattern": "login",
+                    "name": "login",
+                    "target": "login"
+                },
+                {
+                    "pattern": "sort",
+                    "name": "sort",
+                    "target": "sort"
+                },
+                {
+                    "pattern": "projects",
+                    "name": "projects",
+                    "target": [
+                        "splitView",
+                        "projectsList",
+                        "projectsMessagePage"
+                    ],
+                    "subroutes": [{
+                            "pattern": "projects/create",
+                            "name": "projectCreate",
+                            "target": "projectCreate"
+                        },
+                        {
+                            "pattern": "projects/detail/{id}",
+                            "name": "projectDetail",
+                            "target": "projectDetail"
+                        }
+                    ]
+                }
+            ],
+            "targets": {
+                "home": {
+                    "viewName": "Home",
+                    "controlId": "mainContents",
+                    "controlAggregation": "pages"
+                },
+                "login": {
+                    "viewName": "Login",
+                    "controlId": "mainContents",
+                    "controlAggregation": "pages"
+                },
+                "sort": {
+                    "viewName": "sort.Sort",
+                    "controlId": "mainContents",
+                    "controlAggregation": "pages"
+                },
+                "splitView": {
+                    "viewName": "SplitView",
+                    "controlId": "mainContents",
+                    "controlAggregation": "pages"
+                },
+                "projectsMessagePage": {
+                    "viewName": "projects.ProjectsMessagePage",
+                    "parent": "splitView",
+                    "viewLevel": 1
+                },
+                "projectCreate": {
+                    "viewName": "projects.ProjectCreate",
+                    "parent": "splitView",
+                    "viewLevel": 2
+                },
+                "projectDetail": {
+                    "viewName": "projects.ProjectDetail",
+                    "parent": "splitView",
+                    "viewLevel": 2
+                },
+                "projectsList": {
+                    "viewName": "projects.ProjectsList",
+                    "parent": "splitView",
+                    "controlAggregation": "masterPages"
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,60 @@
+<!DOCTYPE xml>
+<core:View xmlns:core="sap.ui.core" controllerName="geosort.controller.sort.Sort" xmlns="sap.m" xmlns:f="sap.ui.layout.form" xmlns:l="sap.ui.layout">
+    <Page class="sapUiContentPadding" showFooter="true" showHeader="false" floatingFooter="true" enableScrolling="true">
+        <content>
+            <VBox fitContainer="true">
+                <items>
+                    <f:SimpleForm class="sapUiSmallMarginBottom"
+                        editable="true"
+                        layout="ResponsiveGridLayout"
+                        emptySpanL="3">
+                        <f:toolbar>
+                            <Toolbar>
+                                <Title text="{i18n>FORM_CONT_TITLE_SETTINGS}" level="H4" titleStyle="H4"/>
+                                <ToolbarSpacer />
+                                <Button text="{i18n>BUT_SAVE}" press="onSaveSettings"/>
+                            </Toolbar>
+                        </f:toolbar>
+                        <f:content>
+                            <Label text="{i18n>LABEL_GOOGLE_PHOTOS_FLAG}"/>
+                            <CheckBox selected="{app>/user/sortSettings/googlePhotosFlag}"/>
+                            <Label text="{i18n>LABEL_DIR_NAME_DRIVE}"/>
+                            <Input name="driveDirectory" fieldGroupIds="fgSettings" enabled="{= !${app>/user/sortSettings/googlePhotosFlag} }" value="{path: 'app>/user/sortSettings/dirNameDrive', type: 'sap.ui.model.type.String', constraints: {minLength: 1}}"/>
+                            <Label text="{i18n>LABEL_DELETE_FLAG}"/>
+                            <CheckBox selected="{app>/user/sortSettings/deleteFlag}"/>
+                        </f:content>
+                    </f:SimpleForm>
+                    <List
+                        backgroundDesign="Translucent"
+                        noDataText="{i18n>TXT_NO_PROJECTS}"
+                        showSeparators="None"
+                        items="{
+                            path: 'projects>/',
+                            sorter: {
+                                path: 'status',
+                                descending: false,
+                                group: true
+                            },
+                            groupHeaderFactory: '.getGroupHeader'
+                        }">
+                        <CustomListItem class="projects sapMLIBHoverable" press="onProjectPress" type="Active">
+                            <HBox class="sapUiSmallMargin">
+                                <core:Icon src="{path: 'projects>status', formatter: '.formatter.projectIcon'}" class="foldericon" size="2rem"/>
+                                <VBox class="sapUiSmallMarginBegin">
+                                    <Link text="{projects>title}" press="onProjectPress"/>
+                                    <Text text="{projects>directory}"/>
+                                </VBox>
+                            </HBox>
+                        </CustomListItem>
+                    </List>
+                </items>
+            </VBox>
+        </content>
+        <footer>
+            <Toolbar>
+                <ToolbarSpacer/>
+                <Button text="{i18n>BUT_SORT}" press="onSortProjects" type="Emphasized"/>
+            </Toolbar>
+        </footer>
+    </Page>
+</core:View>

@@ -1,0 +1,8 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core">
+	<BusyDialog
+		title="{i18n>BUSY_DIALOG_TITLE}"
+		text="{i18n>BUSY_DIALOG_PROGRESS}: {download>/downloadCount}/{download>/imagesCount} {i18n>BUSY_DIALOG_IMAGES}"
+		showCancelButton="false"/>
+</core:FragmentDefinition>

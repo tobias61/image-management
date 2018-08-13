@@ -1,0 +1,63 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta charset="UTF-8">
+
+    <title>Baudirekt Image Management</title>
+
+    <script src="https://www.gstatic.com/firebasejs/5.2.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.2.0/firebase-firestore.js"></script>
+    <script>
+        // Initialize Firebase
+        var config = {
+            apiKey: "AIzaSyB_47GPeahkaTIlLdqEz0dInwqwYs2S6TE",
+            authDomain: "baudirekt-image-management.firebaseapp.com",
+            databaseURL: "https://baudirekt-image-management.firebaseio.com",
+            projectId: "baudirekt-image-management",
+            storageBucket: "baudirekt-image-management.appspot.com",
+            messagingSenderId: "45739233279"
+        };
+        firebase.initializeApp(config);
+
+        var db = firebase.firestore();
+        const settings = {
+            timestampsInSnapshots: true
+        };
+        db.settings(settings);
+    </script>
+
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.10/lodash.min.js"></script>
+
+    <script>
+        window.nodeRequire = require;
+        delete window.require;
+        delete window.exports;
+        delete window.module;
+    </script>
+
+    <script id="sap-ui-bootstrap" src="https://sapui5.hana.ondemand.com/resources/sap-ui-core.js" data-sap-ui-theme="sap_belize"
+        data-sap-ui-compatVersion="edge" data-sap-ui-resourceroots='{"geosort": "./"}'>
+    </script>
+
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+
+    <script>
+        sap.ui.getCore().attachInit(function () {
+            const uiComponent = sap.ui.getCore().createComponent({
+                name: "geosort",
+                id: "uicomponent"
+            })
+
+            const componentContainer = new sap.ui.core.ComponentContainer({
+                component: uiComponent
+            }).placeAt("content")
+        })
+    </script>
+</head>
+
+<body class="sapUiBody" id="content"></body>
+
+</html>

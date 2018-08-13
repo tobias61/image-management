@@ -1,0 +1,69 @@
+<!DOCTYPE xml>
+<core:View xmlns:core="sap.ui.core" controllerName="geosort.controller.projects.ProjectCreate" xmlns="sap.m" xmlns:u="sap.ui.unified" xmlns:l="sap.ui.layout" xmlns:f="sap.ui.layout.form">
+    <Page id="page" title="{i18n>PAGE_TITLE_NEW_PROJECT}" showFooter="true" floatingFooter="true" showHeader="true">
+        <content>
+            <VBox fitContainer="true">
+                <f:SimpleForm layout="ResponsiveGridLayout" emptySpanL="3" editable="true">
+                    <f:content>
+                        <core:Title text="{i18n>FORM_CONT_TITLE_PROJECT_INFO}" />
+                        <Label text="{i18n>LABEL_PROJECT_TITLE}" />
+                        <Input fieldGroupIds="fgProject" value="{path: 'project>/title', type: 'sap.ui.model.type.String', constraints: {minLength: 3}}"/>
+                        <Label text="{i18n>LABEL_OUTPUT_DIRECTORY}" />
+                        <Input fieldGroupIds="fgProject" value="{path: 'project>/directory', type: 'sap.ui.model.type.String', constraints: {minLength: 1}}"/>
+                        <Button text="{i18n>BUT_PICK_DIR}" press="onPickDirectory">
+                            <layoutData>
+                                <l:GridData span="L2 M3" />
+                            </layoutData>
+                        </Button>
+                        <Label text="{i18n>LABEL_LOCATION_METHOD}" />
+                        <RadioButtonGroup selectedIndex="{project>/locationMethod}">
+                            <buttons>
+                                <RadioButton id="RB1" selected="{viewModel>/isAddrFormVisible}" text="{i18n>RB_ADDR_INFO}" />
+                                <RadioButton id="RB2" selected="{viewModel>/isGPSFormVisible}" text="{i18n>RB_GPS_DATA}" />
+                                <RadioButton id="RB3" selected="{viewModel>/isImageFormVisible}" text="{i18n>RB_IMAGE_UPLOAD}" />
+                            </buttons>
+                        </RadioButtonGroup>
+                    </f:content>
+                </f:SimpleForm>
+                <f:SimpleForm visible="{viewModel>/isAddrFormVisible}" layout="ResponsiveGridLayout" emptySpanL="3" editable="true">
+                    <f:content>
+                        <core:Title text="{i18n>FORM_CONT_TITLE_ADDR_INFO}" />
+                        <Label text="{i18n>LABEL_STREET_AND_NO}" />
+                        <Input fieldGroupIds="fgAddress" value="{path: 'address>/street', type: 'sap.ui.model.type.String', constraints: {minLength: 3, search: '^[öÖäÄüÜßa-zA-Z -]*$'}}"/>
+                        <Input fieldGroupIds="fgAddress" value="{path: 'address>/streetNo', type: 'sap.ui.model.type.Integer', constraints: {minimum: 1}}">
+                            <layoutData>
+                                <l:GridData span="L1 M2" />
+                            </layoutData>
+                        </Input>
+                        <Label text="{i18n>LABEL_ZIP_AND_CITY}" />
+                        <Input fieldGroupIds="fgAddress" value="{path: 'address>/zipCode', type: 'sap.ui.model.type.String', constraints: {minLength: 5, maxLength: 5, search: '^[0-9]*$'}}">
+                            <layoutData>
+                                <l:GridData span="L1 M2" />
+                            </layoutData>
+                        </Input>
+                        <Input fieldGroupIds="fgAddress" value="{path: 'address>/city', type: 'sap.ui.model.type.String', constraints: {minLength: 3, search: '^[öÖäÄüÜßa-zA-Z -]*$'}}"/>
+                    </f:content>
+                </f:SimpleForm>
+                <f:SimpleForm visible="{viewModel>/isGPSFormVisible}" layout="ResponsiveGridLayout" emptySpanL="3" editable="true">
+                    <f:content>
+                        <core:Title text="{i18n>FORM_CONT_TITLE_GPS_DATA}"/>
+                        <Label text="{i18n>LABEL_LATITUDE}"/>
+                        <Input fieldGroupIds="fgGps" value="{path: 'gps>/lat', type: 'sap.ui.model.type.Float'}"/>
+                        <Label text="{i18n>LABEL_LONGITUDE}"/>
+                        <Input fieldGroupIds="fgGps" value="{path: 'gps>/lng', type: 'sap.ui.model.type.Float'}"/>
+                    </f:content>
+                </f:SimpleForm>
+                <!-- <f:SimpleForm visible="{viewModel>/isImageFormVisible}" layout="ResponsiveGridLayout" emptySpanL="3" editable="true">
+
+                </f:SimpleForm> -->
+            </VBox>
+        </content>
+        <footer>
+            <Toolbar>
+                <ToolbarSpacer/>
+                <Button text="{i18n>BUT_SAVE}" enabled="{parts: ['project>/', 'address>/', 'gps>/', 'viewModel>/'], formatter: '.formatter.saveButton'}" press="onSaveProject" type="Emphasized" />
+                <Button text="{i18n>BUT_CANCEL}" press="onCancelCreation" type="Transparent" />
+            </Toolbar>
+        </footer>
+    </Page>
+</core:View>

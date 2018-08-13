@@ -1,0 +1,28 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core">
+    <Dialog 
+        title="{i18n>DOWNLOAD_INFO_DIALOG_TITLE}"
+        type="Message"
+        state="{parts: ['download>/downloadCount', 'download>/failedDownloadCount', 'download>/notMatchedCount'], formatter: '.formatter.downloadInfoState'}">
+        <content>
+            <HBox justifyContent="SpaceBetween">
+                <items>
+                    <VBox>
+                        <Text text="{i18n>DOWNLOAD_INFO_DIALOG_DOWNLOADS}:"/>
+                        <Text text="{i18n>DOWNLOAD_INFO_DIALOG_FAILED_DOWNLOADS}:"/>
+                        <Text text="{i18n>DOWNLOAD_INFO_DIALOG_NOT_SORTED}:"/>
+                    </VBox>
+                    <VBox>
+                        <Text text="{download>/downloadCount}"/>
+                        <Text text="{download>/failedDownloadCount}"/>
+                        <Text text="{download>/notMatchedCount}"/>
+                    </VBox>
+                </items>
+            </HBox>
+        </content>
+        <buttons>
+            <Button text="{i18n>BUT_OK}" press="onCloseDialog"/>
+        </buttons>
+    </Dialog>
+</core:FragmentDefinition>

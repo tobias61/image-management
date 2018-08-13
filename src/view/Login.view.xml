@@ -1,0 +1,10 @@
+<!DOCTYPE xml>
+<core:View xmlns:core="sap.ui.core" controllerName="geosort.controller.Login" xmlns="sap.m" >
+    <Page showFooter="false" showHeader="false" enableScrolling="false">
+        <FlexBox fitContainer="true" alignItems="Center" justifyContent="Center">
+            <items>
+                <Image src="images/btn_google_signin_light_normal_web.png" activeSrc="images/btn_google_signin_light_pressed_web.png" press="onSignIn" />
+            </items>
+        </FlexBox>
+    </Page>
+</core:View>

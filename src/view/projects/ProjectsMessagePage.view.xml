@@ -1,0 +1,10 @@
+<!DOCTYPE xml>
+<core:View xmlns:core="sap.ui.core" xmlns="sap.m" controllerName="geosort.controller.projects.ProjectsMessagePage">
+  <Page id="emptyPage" showHeader="false">
+    <MessagePage showHeader="false" text="{i18n>TXT_NO_PROJECTS}">
+      <customDescription>
+        <Link text="{i18n>TXT_ADD_NEW_PROJECT}" press="onAddProject"/>
+      </customDescription>
+    </MessagePage>
+  </Page>
+</core:View>

@@ -1,0 +1,5 @@
+<!DOCTYPE xml>
+<core:View xmlns:core="sap.ui.core" controllerName="geosort.controller.Home" xmlns="sap.m" >
+    <Page showFooter="false" showHeader="false" enableScrolling="false">
+    </Page>
+</core:View>
