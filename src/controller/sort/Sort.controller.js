@@ -8,9 +8,8 @@ sap.ui.define([
     'sap/ui/core/format/DateFormat',
     'geosort/util/DatabaseHelper',
     'geosort/util/Formatter',
-    'geosort/util/GeocodeHelper',
     'geosort/util/NotificationHelper'
-], function (Controller, UIComponent, JSONModel, GroupHeaderListItem, Message, MessageType, DateFormat, DatabaseHelper, Formatter, GeocodeHelper, NotificationHelper) {
+], function (Controller, UIComponent, JSONModel, GroupHeaderListItem, Message, MessageType, DateFormat, DatabaseHelper, Formatter, NotificationHelper) {
     'use strict';
 
     return Controller.extend('geosort.controller.sort.Sort', {
@@ -23,13 +22,25 @@ sap.ui.define([
             this.router = UIComponent.getRouterFor(this)
             this.i18n = this.getOwnerComponent().getModel('i18n').getResourceBundle()
 
-			if (!this.getOwnerComponent().getModel('app').getProperty('/projects/isListenerAttached')) {
-                DatabaseHelper.attachProjectsListener(this.getOwnerComponent().getModel('app').getProperty('/user/id'))
-				this.getOwnerComponent().getModel('app').setProperty('/projects/isListenerAttached', true)
-            }
             this.getView().setModel(DatabaseHelper.getProjects(), 'projects')
-
             this.getView().setModel(new JSONModel(), 'download')
+
+            DatabaseHelper.attachProjectsListener(this.getOwnerComponent().getModel('app').getProperty('/user/id'), function (snapshot) {
+                this.getView().byId('projectsList').setBusy(true)
+                if (!this.getOwnerComponent().getModel('app').getProperty('/projects/isListenerAttached')) {
+                    this.getOwnerComponent().getModel('app').setProperty('/projects/isListenerAttached', true)
+                    let projects = {}
+                    snapshot.forEach(doc => {
+                        projects[doc.id] = doc.data()
+                    })
+                    DatabaseHelper.getProjects().setData(projects)
+                }
+				this.getView().byId('projectsList').setBusy(false)
+            }.bind(this))
+            
+            if (!this.getOwnerComponent().getModel('app').getProperty('/user/sortSettings')) {
+                this.getOwnerComponent().getModel('app').setProperty('/user/sortSettings', DatabaseHelper.getEmptySettings())
+            }
         },
 
         onSaveSettings: async function (evt) {
@@ -75,11 +86,12 @@ sap.ui.define([
                 try {
                     const folder = await drive.getFolder(settings.dirNameDrive)
 
-                    if (folder.data.files.length === 0) return NotificationHelper.information(this.i18n.getText('MSG_SORT_IMAGES_DIR_NOT_FOUND'))
+                    if (folder.data.files.length < 1) return NotificationHelper.information(this.i18n.getText('MSG_SORT_IMAGES_DIR_NOT_FOUND'))
                     const images = await drive.getImages(folder.data.files[0].id)
 
-                    if (images.data.files.length === 0) return NotificationHelper.information(this.i18n.getText('MSG_SORT_IMAGES_NO_IMAGES'))
+                    if (images.data.files.length < 1) return NotificationHelper.information(this.i18n.getText('MSG_SORT_IMAGES_NO_IMAGES'))
                     const projects = this.getView().getModel('projects').getData()
+
                     matchedImages = maps.matchImagesToProjects(images.data.files, projects)
                     download.setProperty('/notMatchedCount', (images.data.files.length - matchedImages.length))
                 } catch (error) {
@@ -95,7 +107,7 @@ sap.ui.define([
             }
             sap.ui.core.BusyIndicator.hide()
 
-            if (matchedImages.length === 0) return NotificationHelper.information(this.i18n.getText('MSG_MATCH_IMAGES_NO_IMAGES'))
+            if (matchedImages.length < 1) return NotificationHelper.information(this.i18n.getText('MSG_MATCH_IMAGES_NO_IMAGES'))
 
 			if (!this.downloadBusyDialog) {
 				this.downloadBusyDialog = sap.ui.xmlfragment('geosort.view.sort.DownloadBusyDialog', this);

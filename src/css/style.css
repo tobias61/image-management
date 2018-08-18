@@ -30,3 +30,7 @@
 .directoryinput {
     cursor: pointer;
 }
+
+.messageStrip {
+    margin: 1rem !important;
+}

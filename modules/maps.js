@@ -1,9 +1,8 @@
-const config = require('../config')
 const axios = require('axios')
 const moment = require('moment')
 
 const googleMapsClient = require('@google/maps').createClient({
-    key: config.GOOGLE.API_KEY,
+    key: process.env.GOOGLE_API_KEY,
     Promise: Promise
 })
 
@@ -40,15 +39,19 @@ exports.matchImagesToProjects = (images, projects) => {
     let matchedImages = []  
 
     for (let projectId in projects) {
+        if (projects[projectId].status === 1) continue
         images.forEach(image => {
             let project = projects[projectId]
+
             /** TODO: Check if date format is conistent for all devices (currently works for Apple) */
-            
+
             let date
-            if (!moment(image.imageMediaMetadata.time).isValid()) {
+            try {
+                if (moment(image.imageMediaMetadata.time).isValid()) {
+                    date = moment(image.imageMediaMetadata.time)
+                } else throw new Error()
+            } catch (error) {
                 date = moment(image.imageMediaMetadata.time, 'YYYY-MM-DD') /** NOTE: For Apple devices */
-            } else {
-                date = moment(image.imageMediaMetadata.time)
             }
 
             if (project.gps && image.imageMediaMetadata.location && calculateDistance(project.gps.lat, image.imageMediaMetadata.location.latitude, project.gps.lng, image.imageMediaMetadata.location.longitude) <= 0.5) {

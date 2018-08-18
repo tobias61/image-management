@@ -18,7 +18,7 @@ sap.ui.define([
 
         onSignIn: async function (evt) {
             const { remote } = nodeRequire('electron')
-            const auth = remote.require('./modules/auth.js')
+            const auth = remote.require('../modules/auth.js')
 
             sap.ui.core.BusyIndicator.show(0)
             try {
@@ -31,7 +31,7 @@ sap.ui.define([
                 appModel.setProperty('/user/id', response.data.user.permissionId)
                 appModel.setProperty('/isLoggedIn', true)
 
-                this.router.navTo('home')   
+                this.router.navTo('projects')   
             } catch (error) {
                 NotificationHelper.error(this.i18n.getText('MSG_LOGIN_ERROR'))
             }

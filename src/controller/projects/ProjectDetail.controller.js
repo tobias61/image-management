@@ -52,6 +52,7 @@ sap.ui.define([
 			} catch (error) {
 				NotificationHelper.error(this.i18n.getText('MSG_UPDATE_PROJECT_ERROR'))
 			}
+			DatabaseHelper.getProjects().updateBindings(true)
 			sap.ui.core.BusyIndicator.hide()
 		},
 
@@ -70,6 +71,7 @@ sap.ui.define([
 			} catch (error) {
 				NotificationHelper.error(this.i18n.getText('MSG_UPDATE_PROJECT_ERROR'))
 			}
+			DatabaseHelper.getProjects().updateBindings(true)
 			sap.ui.core.BusyIndicator.hide()
 		},
 

@@ -1,6 +1,6 @@
 <!DOCTYPE xml>
 <core:View xmlns:core="sap.ui.core" controllerName="geosort.controller.projects.ProjectDetail" xmlns="sap.uxap" xmlns:m="sap.m" xmlns:f="sap.ui.layout.form" >
-    <!-- <m:Page backgroundDesign="Standard" showFooter="false" showHeader="false" enableScrolling="false"> -->
+    <!-- <m:Page showFooter="false" showHeader="true" enableScrolling="false"> -->
         <ObjectPageLayout>
             <headerTitle>
 				<ObjectPageHeader
