@@ -18,14 +18,15 @@
             projectId: "baudirekt-image-management",
             storageBucket: "baudirekt-image-management.appspot.com",
             messagingSenderId: "45739233279"
-        };
-        firebase.initializeApp(config);
+        }
+        firebase.initializeApp(config)
 
-        var db = firebase.firestore();
+        // var storage = firebase.storage()
+        var db = firebase.firestore()
         const settings = {
             timestampsInSnapshots: true
-        };
-        db.settings(settings);
+        }
+        db.settings(settings)
     </script>
 
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>

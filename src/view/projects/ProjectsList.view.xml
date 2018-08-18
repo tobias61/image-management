@@ -12,6 +12,7 @@
         <content>
             <List
                 id="projectsList"
+                busyIndicatorDelay="0"
                 noDataText="{i18n>TXT_NO_PROJECTS}"
                 items="{
                     path: '/',

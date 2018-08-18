@@ -52,5 +52,12 @@ sap.ui.define([], function () {
             // if (!project.title && !project.directory) return false;
             return true;
         },
+
+        sortButton: function (projects) {
+            for (let project in projects) {
+                if (projects[project].status === 0) return true
+            }
+            return false
+        }
 	};
 });

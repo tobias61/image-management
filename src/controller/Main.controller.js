@@ -26,17 +26,19 @@ sap.ui.define([
 
             sap.ui.core.BusyIndicator.show(0)
             try {
-                const response = await auth.loginUser()
-                let user = await DatabaseHelper.getUser(response.data.user)
-                user = user.data()
+                console.log(auth.sayHello())
+                // const response = await auth.loginUser()
+                // let user = await DatabaseHelper.getUser(response.data.user)
+                // user = user.data()
 
-                const appModel = this.getOwnerComponent().getModel('app')
-                appModel.setProperty('/user', user)
-                appModel.setProperty('/user/id', response.data.user.permissionId)
-                appModel.setProperty('/isLoggedIn', true)
+                // const appModel = this.getOwnerComponent().getModel('app')
+                // appModel.setProperty('/user', user)
+                // appModel.setProperty('/user/id', response.data.user.permissionId)
+                // appModel.setProperty('/isLoggedIn', true)
 
-                this.router.navTo('home')
+                this.router.navTo('sort')
             } catch (error) {
+                console.log(error)
                 this.router.navTo('login')
             }
             sap.ui.core.BusyIndicator.hide()
@@ -84,7 +86,15 @@ sap.ui.define([
             const main = remote.require('./main.js')
 
             main.quitApp()
-        } 
+        },
+
+        onNavigationTriggered: function (evt) {
+            sap.ui.core.BusyIndicator.show(0)
+        },
+
+        onNavigationFinished: function (evt) {
+            sap.ui.core.BusyIndicator.hide()
+        }
 
 	});
 });

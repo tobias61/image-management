@@ -52,15 +52,16 @@ sap.ui.define([
 
     const projectsModel = new JSONModel();
     
-    DatabaseHelper.attachProjectsListener = (userId) => {
+    DatabaseHelper.attachProjectsListener = (userId, handler) => {
         db.collection('projects').where('user', '==', userId)
-            .onSnapshot((snapshot) => {
-                let projects = {}
-                snapshot.forEach(doc => {
-                    projects[doc.id] = doc.data()
-                })
-                projectsModel.setData(projects)
-            })
+            .onSnapshot(handler)
+                // handler(snapshot)
+                // let projects = {}
+                // snapshot.forEach(doc => {
+                //     projects[doc.id] = doc.data()
+                // })
+                // projectsModel.setData(projects)
+            
     }
 
     DatabaseHelper.getEmptyProject = () => {
@@ -111,10 +112,6 @@ sap.ui.define([
     
     DatabaseHelper.getEmptySettings = () => {
         return jQuery.extend(true, {}, emptySettingsTemplate)
-    }
-    
-    DatabaseHelper.getSortSettings = (userId) => {
-
     }
 
     DatabaseHelper.saveSortSettings = (user) => {

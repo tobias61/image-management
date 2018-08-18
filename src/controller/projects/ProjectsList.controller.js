@@ -19,41 +19,45 @@ sap.ui.define([
 			this.router = UIComponent.getRouterFor(this)
 			this.i18n = this.getOwnerComponent().getModel('i18n').getResourceBundle()
 
-			if (!this.getOwnerComponent().getModel('app').getProperty('/projects/isListenerAttached')) {
-				DatabaseHelper.attachProjectsListener(this.getOwnerComponent().getModel('app').getProperty('/user/id'))
-				this.getOwnerComponent().getModel('app').setProperty('/projects/isListenerAttached', true)
-			}
 			this.getView().setModel(DatabaseHelper.getProjects())
 
-			// this.router.getRoute('projects').attachPatternMatched(this.onRoutePatternMatched, this)
+			DatabaseHelper.attachProjectsListener(this.getOwnerComponent().getModel('app').getProperty('/user/id'), function (snapshot) {
+				this.getView().byId('projectsList').setBusy(true)
+
+                if (!this.getOwnerComponent().getModel('app').getProperty('/projects/isListenerAttached')) {
+                    this.getOwnerComponent().getModel('app').setProperty('/projects/isListenerAttached', true)
+                    let projects = {}
+                    snapshot.forEach(doc => {
+                        projects[doc.id] = doc.data()
+                    })
+					DatabaseHelper.getProjects().setData(projects)
+					
+					if (Object.keys(this.getView().getModel().getData()).length > 0) {
+						this.getView().byId('projectsList').setSelectedItem(this.getView().byId('projectsList').getItems()[0])
+						this.router.navTo('projectDetail', {
+							id: Object.keys(this.getView().getModel().getData())[0]
+						})
+					}
+				}
+
+				this.getView().byId('projectsList').setBusy(false)
+			}.bind(this))
+
+			this.router.getRoute('projects').attachPatternMatched(this.onRoutePatternMatched, this)
 		},
 
 		onRoutePatternMatched: function (evt) {
-			const projects = this.getView().getModel().getProperty('/')
+			const projects = this.getView().getModel().getData()
 
-			if (Object.keys(projects).length !== 0) {
-				this.getView().byId('projectsList').setSelectedItem(this.getView().byId('projectsList').getItems()[0])
-				this.router.navTo('projectDetail', {
-					id: Object.keys(projects)[0]
-				})
+			if (Object.keys(projects).length > 0) {
+
+				if (this.getView().byId('projectsList').getSelectedItem() !== null) {
+					let item = this.getView().byId('projectsList').getSelectedItem()
+					this.router.navTo('projectDetail', {
+						id: item.getBindingContext().getPath().slice(1)
+					})
+				} 
 			}
-			// if (projects && Object.keys(projects).length === 0) {
-			// 	this.getView().byId('projectsList').getBinding('items').attachChange(function (evt) {
-			// 		let projects = this.getView().getModel().getProperty('/')
-
-			// 		if (projects) {
-			// 			this.getView().byId('projectsList').setSelectedItem(this.getView().byId('projectsList').getItems()[0])
-
-			// 			this.router.navTo('projectDetail', {
-			// 				id: Object.keys(projects)[0]
-			// 			});
-			// 		}
-			// 	}.bind(this));
-			// } else if (projects) {
-			// 	this.router.navTo('projectDetail', {
-			// 		id: Object.keys(projects)[0]
-			// 	});
-			// }
 		},
 
 		onSearchProjects: function (evt) {
@@ -67,6 +71,7 @@ sap.ui.define([
 		},
 
 		onProjectSelected: function (evt) {
+			console.log(evt.getParameter('listItem').getBindingContext())
 			const path = evt.getParameter('listItem').getBindingContext().getPath()
 
 			this.router.navTo('projectDetail', {

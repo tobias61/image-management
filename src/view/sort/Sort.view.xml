@@ -17,7 +17,7 @@
                         </f:toolbar>
                         <f:content>
                             <Label text="{i18n>LABEL_GOOGLE_PHOTOS_FLAG}"/>
-                            <CheckBox selected="{app>/user/sortSettings/googlePhotosFlag}"/>
+                            <CheckBox enabled="false" selected="{app>/user/sortSettings/googlePhotosFlag}"/>
                             <Label text="{i18n>LABEL_DIR_NAME_DRIVE}"/>
                             <Input name="driveDirectory" fieldGroupIds="fgSettings" enabled="{= !${app>/user/sortSettings/googlePhotosFlag} }" value="{path: 'app>/user/sortSettings/dirNameDrive', type: 'sap.ui.model.type.String', constraints: {minLength: 1}}"/>
                             <Label text="{i18n>LABEL_DELETE_FLAG}"/>
@@ -25,6 +25,8 @@
                         </f:content>
                     </f:SimpleForm>
                     <List
+                        id="projectsList"
+                        busyIndicatorDelay="0"
                         backgroundDesign="Translucent"
                         noDataText="{i18n>TXT_NO_PROJECTS}"
                         showSeparators="None"
@@ -53,7 +55,7 @@
         <footer>
             <Toolbar>
                 <ToolbarSpacer/>
-                <Button text="{i18n>BUT_SORT}" press="onSortProjects" type="Emphasized"/>
+                <Button text="{i18n>BUT_SORT}" enabled="{path: 'projects>/', formatter: '.formatter.sortButton'}" press="onSortProjects" type="Emphasized"/>
             </Toolbar>
         </footer>
     </Page>

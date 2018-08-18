@@ -7,10 +7,21 @@ const config = require('../config')
 const drive = require('./drive')
 
 const oauth2Client = new google.auth.OAuth2(
-    config.GOOGLE.CLIENT_ID,
-    config.GOOGLE.CLIENT_SECRET,
-    config.GOOGLE.REDIRECT_URI
+    process.env.GOOGLE_CLIENT_ID,
+    process.env.GOOGLE_CLIENT_SECRET,
+    process.env.GOOGLE_REDIRECT_URI
 )
+
+exports.sayHello = () => {
+    return {
+        fs,
+        google,
+        parse,
+        config,
+        drive,
+        oauth2Client
+    }
+}
 
 exports.getAuthClient = () => {
     return oauth2Client
@@ -19,6 +30,8 @@ exports.getAuthClient = () => {
 exports.loginUser = () => {
     return new Promise(async (resolve, reject) => {
         fs.readFile(config.GOOGLE.TOKEN_PATH, async (error, token) => {
+            console.log(token)
+            console.log(error)
             if (error) return reject(error)
             /* TODO: Implement functionality when refresh token is missing*/
 

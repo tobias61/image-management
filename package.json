@@ -1,21 +1,36 @@
 {
   "name": "geosort-electron",
   "version": "1.0.0",
-  "description": "",
+  "description": "Baudirekt Image Management",
   "main": "main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "electron": "electron ."
+    "electron": "electron .",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder",
+    "package-mac": "electron-packager . --overwrite --platform=darwin --arch=x64 --icon=assets/icons/mac/icon.icns --prune=true --out=release-builds",
+    "package-win": "electron-packager . baudirekt-image-management --overwrite --asar=true --platform=win32 --arch=ia32 --prune=true --out=release-builds --version-string.CompanyName=CE --version-string.FileDescription=CE --version-string.ProductName=\"Baudirekt Image Management\"",
+    "package-linux": "electron-packager . electron-tutorial-app --overwrite --asar=true --platform=linux --arch=x64 --icon=assets/icons/png/1024x1024.png --prune=true --out=release-builds"
   },
-  "author": "",
+  "build": {
+    "appId": "bauriekt.image-management",
+    "mac": {
+      "category": "your.app.category.type"
+    }
+  },
+  "author": "Tobias Knietzsch",
   "license": "ISC",
   "devDependencies": {
-    "electron": "^2.0.4"
+    "electron": "^2.0.4",
+    "electron-builder": "^20.28.1",
+    "electron-packager": "^12.1.0"
   },
   "dependencies": {
     "@google/maps": "^0.5.5",
     "axios": "^0.18.0",
     "body-parser": "^1.18.3",
+    "dotenv": "^6.0.0",
+    "exif-parser": "^0.1.12",
     "express": "^4.16.3",
     "googleapis": "^32.0.0",
     "moment": "^2.22.2"
