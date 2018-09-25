@@ -6,7 +6,7 @@
         </headerContent>
         <subHeader>
             <Toolbar>
-                <SearchField search="onSearchProjects"/>
+                <SearchField placeholder="{i18n>SEARCH_PLACEHOLDER_TITLE}" search="onSearchProjects"/>
             </Toolbar>
         </subHeader>
         <content>
@@ -16,19 +16,22 @@
                 noDataText="{i18n>TXT_NO_PROJECTS}"
                 items="{
                     path: '/',
-                    sorter: {
+                    sorter: [{
                         path: 'status',
                         descending: false,
                         group: true
-                    },
+                    }, {
+                        path: 'title',
+                        descending: false
+                    }],
                     groupHeaderFactory: '.getGroupHeader'
                 }"
                 mode="SingleSelectMaster"
                 selectionChange="onProjectSelected">
                 <StandardListItem
-                    title="{title}"
-                    info="{path: 'status', formatter: '.formatter.projectStatusText'}"
-                    infoState="{path: 'status', formatter: '.formatter.projectStatusColor'}"/>
+                    title="{path: 'title', mode: 'OneTime'}"/>
+                    <!-- info="{path: 'status', formatter: '.formatter.projectStatusText'}" -->
+                    <!-- infoState="{path: 'status', formatter: '.formatter.projectStatusColor'}" -->
             </List>
         </content>
     </Page>

@@ -88,11 +88,43 @@
                             "pattern": "projects/detail/{id}",
                             "name": "projectDetail",
                             "target": "projectDetail"
+                        },
+                        {
+                            "pattern": "projects/edit/{id}",
+                            "name": "projectEdit",
+                            "target": "projectEdit"
                         }
                     ]
+                }, 
+                {
+                    "pattern": "admin",
+                    "name": "admin",
+                    "subroutes": [{
+                        "pattern": "admin/projects",
+                        "name": "adminProjects",
+                        "target": "adminProjects"
+                    },
+                    {
+                        "pattern": "admin/users",
+                        "name": "adminUsers",
+                        "target": "adminUsers"
+                    }]
                 }
             ],
             "targets": {
+                "admin": {
+
+                },
+                "adminProjects": {
+                    "viewName": "admin.AdminProjects",
+                    "controlId": "mainContents",
+                    "controlAggregation": "pages"
+                },
+                "adminUsers": {
+                    "viewName": "admin.AdminUsers",
+                    "controlId": "mainContents",
+                    "controlAggregation": "pages"
+                },
                 "home": {
                     "viewName": "Home",
                     "controlId": "mainContents",
@@ -127,6 +159,11 @@
                     "viewName": "projects.ProjectDetail",
                     "parent": "splitView",
                     "viewLevel": 2
+                },
+                "projectEdit": {
+                    "viewName": "projects.ProjectEdit",
+                    "parent": "splitView",
+                    "viewLevel": 3
                 },
                 "projectsList": {
                     "viewName": "projects.ProjectsList",

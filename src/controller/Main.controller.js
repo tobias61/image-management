@@ -26,19 +26,17 @@ sap.ui.define([
 
             sap.ui.core.BusyIndicator.show(0)
             try {
-                console.log(auth.sayHello())
-                // const response = await auth.loginUser()
-                // let user = await DatabaseHelper.getUser(response.data.user)
-                // user = user.data()
+                const response = await auth.loginUser()
+                let user = await DatabaseHelper.getUser(response.data.user)
+                user = user.data()
 
-                // const appModel = this.getOwnerComponent().getModel('app')
-                // appModel.setProperty('/user', user)
-                // appModel.setProperty('/user/id', response.data.user.permissionId)
-                // appModel.setProperty('/isLoggedIn', true)
+                const appModel = this.getOwnerComponent().getModel('app')
+                appModel.setProperty('/user', user)
+                appModel.setProperty('/user/id', response.data.user.permissionId)
+                appModel.setProperty('/isLoggedIn', true)
 
-                this.router.navTo('sort')
+                this.router.navTo('projects')
             } catch (error) {
-                console.log(error)
                 this.router.navTo('login')
             }
             sap.ui.core.BusyIndicator.hide()

@@ -1,17 +1,17 @@
 sap.ui.define([
 	'sap/ui/core/mvc/Controller',
-	'sap/ui/core/UIComponent',
-	'sap/ui/model/json/JSONModel',
-	'sap/ui/core/message/Message',
+    'sap/ui/core/UIComponent',
+    'sap/ui/model/json/JSONModel',
+    'sap/m/MessageStrip',
+    'sap/ui/core/message/Message',
 	'sap/ui/core/MessageType',
-	'sap/m/MessageStrip',
 	'geosort/util/DatabaseHelper',
-	'geosort/util/Formatter',
-	'geosort/util/NotificationHelper'
-], function(Controller, UIComponent, JSONModel, Message, MessageType, MessageStrip, DatabaseHelper, Formatter, NotificationHelper) {
+	'geosort/util/NotificationHelper',
+	'geosort/util/Formatter'
+], function(Controller, UIComponent, JSONModel, MessageStrip, Message, MessageType, DatabaseHelper, NotificationHelper, Formatter) {
 	'use strict';
 
-	return Controller.extend('geosort.controller.projects.ProjectCreate', {
+	return Controller.extend('geosort.controller.projects.ProjectEdit', {
 
 		formatter: Formatter,
 		i18n: null,
@@ -19,110 +19,47 @@ sap.ui.define([
 
 		onInit: function () {
 			this.router = UIComponent.getRouterFor(this)
-			this.i18n = this.getOwnerComponent().getModel('i18n').getResourceBundle()
+            this.i18n = this.getOwnerComponent().getModel('i18n').getResourceBundle()
 
-			this.getView().setModel(new JSONModel(), 'project')
-			this.getView().setModel(new JSONModel(), 'address')
-			this.getView().setModel(new JSONModel(), 'gps')
-			this.getView().setModel(new JSONModel(), 'image')
-			this.getView().setModel(new JSONModel(), 'view')
+            this.getView().setModel(new JSONModel(), 'view')
 
-			this.router.getRoute('projectCreate').attachBeforeMatched(this.onBeforeRouteMatched, this)
-			this.router.getRoute('projectCreate').attachMatched(this.onRouteMatched, this)
-		},
-
-		onBeforeRouteMatched: function (evt) {
-			let formControls = []
-			formControls.push(this.getView().getControlsByFieldGroupId('fgProject'))
-			formControls.push(this.getView().getControlsByFieldGroupId('fgAddress'))
-			formControls.push(this.getView().getControlsByFieldGroupId('fgGps'))
-			formControls.push(this.getView().getControlsByFieldGroupId('fgImage'))
-			formControls = _.flatten(formControls)
-
-			formControls.forEach(control => {
-				control.setValueState('None')
-			})
-			
-			if (this.getView().byId('formContainer').getItems()[0] instanceof MessageStrip) {
-				this.getView().byId('formContainer').removeItem(this.getView().byId('formContainer').getItems()[0])
-			}
-		},
-
-		onRouteMatched: function (evt) {
-			this.getView().getModel('project').setData(DatabaseHelper.getEmptyProject())
-
-			this.getView().getModel('address').setData({
-				street: null,
-				streetNo: null,
-				zipCode: null,
-				city: null
-			})
-
-			this.getView().getModel('gps').setData({
-				lat: null,
-				lng: null
-			})
-
-			this.getView().getModel('image').setData({
-				imagePath: null
-			})
-
-			this.getView().getModel('view').setData({
+            this.getView().setModel(DatabaseHelper.getProjects())
+            
+            this.router.getRoute('projectEdit').attachMatched(this.onRouteMatched, this)
+        }, 
+        
+        onRouteMatched: function (evt) {
+            this.getView().getModel('view').setData({
+                dataChanged: false,
                 validationError: false
             })
-		},
 
-		onCancelCreation: function () {
-			const projects = DatabaseHelper.getProjects().getProperty('/');
+            const args = evt.getParameter('arguments')
 
-			if (Object.keys(projects).length !== 0) {
-				this.router.navTo('projectDetail', {
-					id: Object.keys(projects)[0]
-				});
-			} else {
-				this.router.navTo('projects')
-			}
-		},
+            this.getView().bindElement('/' + args.id)
+            this.getView().getModel().attachPropertyChange(function (evt) {
+                const property = evt.getParameter('path')
 
-		onPickDirectory: async function (evt) {
-            const { remote } = nodeRequire('electron')
-            const explorer = remote.require('./modules/explorer.js')       
-            
-            try {
-                const response = await explorer.pickDirectory()
-                this.getView().getModel('project').setProperty('/directory', response[0])
-            } catch (error) {
-                // console.log(error)
-            }
-		},
-		
-		onPickImage: async function (evt) {
-			const { remote } = nodeRequire('electron')
-			const explorer = remote.require('./modules/explorer')
+				if (property !== 'title' && property !== 'directory' && property !== 'locationMethod') {
+					this.getView().getModel('view').setProperty('/dataChanged', true)
+                }
+            }.bind(this))
+        },
 
-			try {
-				const response = await explorer.pickFile()
-				this.getView().getModel('image').setProperty('/imagePath', response[0])
-			} catch (error) {
-				console.log(error)
-			}
-		},
-
-		onSaveProject: async function (evt) {
+        onSaveProject: async function (evt) {
 			if (!this.validateSettings()) {
 				return this.getView().getModel('view').setProperty('/validationError', true)
 			}
+
 			sap.ui.core.BusyIndicator.show(0)
 
-			let project = this.getView().getModel('project').getProperty('/')
+			const projectId = this.getView().getBindingContext().getPath().slice(1);
+			let project = this.getView().getBindingContext().getObject()
 
 			/** TODO: Implement check for existing address */
 
 			const { remote } = nodeRequire('electron')
 			const explorer = remote.require('./modules/explorer')
-
-			project.user = this.getOwnerComponent().getModel('app').getProperty('/user/id')
-			project.created = Date.now()
 
 			try {
 				const isProjectValid = await DatabaseHelper.isProjectValid(project)
@@ -131,33 +68,25 @@ sap.ui.define([
 					return sap.ui.core.BusyIndicator.hide()
 				}
 			} catch (error) {
-				NotificationHelper.error(this.i18n.getText('MSG_ADD_PROJECT_ERROR'))
+				NotificationHelper.error(this.i18n.getText('MSG_UPDATE_PROJECT_ERROR'))
 				return sap.ui.core.BusyIndicator.hide()
 			}
 
 			if (project.locationMethod === 0) {
-				project.address = this.getView().getModel('address').getProperty('/')
-
 				try {
 					project.gps = await this.getGPS(project.address)
 				} catch (error) {
 					/** TODO: Implement notification when failed */
 				}
 			} else if (project.locationMethod === 1) {
-				project.gps = this.getView().getModel('gps').getProperty('/');
-
 				try {
 					project.address = await this.getAddress(project.gps)
 				} catch (error) {
 					/** TODO: Implement notification if dailed */
 				}
 			} else if (project.locationMethod === 2) {
-				const path = this.getView().getModel('image').getProperty('/imagePath')
-
-				project.imagePath = path
-
 				try {
-					const metadata = await explorer.getFileMetadata(path)
+					const metadata = await explorer.getFileMetadata(project.imagePath)
 					
 					project.gps = {
 						lat: metadata.tags.GPSLatitude,
@@ -171,17 +100,35 @@ sap.ui.define([
 			}
 
 			try {
-				const response = await DatabaseHelper.saveProject(project)
-				NotificationHelper.toast(this.i18n.getText('MSG_ADD_PROJECT_SUCCESS'))
+				await DatabaseHelper.updateProject(project, projectId)
+				NotificationHelper.toast(this.i18n.getText('MSG_UPDATE_PROJECT_SUCCESS'))
 				this.router.navTo('projectDetail', {
-					id: response.id
+					id: projectId
 				})
 			} catch (error) {
-				NotificationHelper.error(this.i18n.getText('MSG_ADD_PROJECT_ERROR'))
+				NotificationHelper.error(this.i18n.getText('MSG_UPDATE_PROJECT_ERROR'))
 			}
 			sap.ui.core.BusyIndicator.hide()
+        },
+
+        onCancelEdit: function (evt) {
+            this.router.navTo('projectDetail', {
+                id: this.getView().getElementBinding().getPath().slice(1)
+            })
 		},
 
+		onPickImage: async function (evt) {
+			const { remote } = nodeRequire('electron')
+			const explorer = remote.require('./modules/explorer')
+
+			try {
+				const response = await explorer.pickFile()
+				this.getView().getModel().setProperty(`/${this.getView().getBindingContext().getPath().slice(1)}/imagePath`, response[0])
+			} catch (error) {
+				console.log(error)
+			}
+		},
+		
 		getAddress: function (gps) {
 			const { remote } = nodeRequire('electron')
 			const maps = remote.require('./modules/maps')
@@ -237,9 +184,9 @@ sap.ui.define([
 			})
 		},
 
-		validateSettings: function () {
+        validateSettings: function () {
 			let formControls = this.getView().getControlsByFieldGroupId('fgProject')
-			let project = this.getView().getModel('project').getProperty('/')
+			let project = this.getView().getBindingContext().getObject()
 
 			if (project.locationMethod === 0) formControls.push(this.getView().getControlsByFieldGroupId('fgAddress'))
 			if (project.locationMethod === 1) formControls.push(this.getView().getControlsByFieldGroupId('fgGps'))
@@ -248,12 +195,12 @@ sap.ui.define([
 
 			let validationErrorCounter = 0
 			formControls.forEach(control => {
-				try {
+                try {
 					const binding = control.getBinding('value')
 					const externalValue = control.getProperty('value')
 					const internalValue = binding.getType().parseValue(externalValue, binding.sInternalType)
 					binding.getType().validateValue(internalValue)
-				} catch (error) {
+                } catch (error) {
 					validationErrorCounter++;
 					const binding = control.getBinding('value')
 					sap.ui.getCore().getMessageManager().addMessages(

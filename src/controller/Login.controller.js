@@ -18,7 +18,7 @@ sap.ui.define([
 
         onSignIn: async function (evt) {
             const { remote } = nodeRequire('electron')
-            const auth = remote.require('../modules/auth.js')
+            const auth = remote.require('./modules/auth.js')
 
             sap.ui.core.BusyIndicator.show(0)
             try {

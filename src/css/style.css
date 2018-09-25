@@ -1,17 +1,30 @@
-.userPopover {
-    background-color: #3f5161 !important
+/* elements */
+body {
+    -webkit-app-region:drag;
 }
 
-.groupheader {
+
+/* classes */
+.directoryinput {
+    cursor: pointer;
+}
+
+.groupheaderPanelList, .groupheaderList {
     color: black !important;
     background-color: transparent !important;
-    border: none !important;
     text-transform: uppercase !important;
     font-size: 0.875rem !important;
 }
 
-.projects {
-    cursor: pointer;
+.groupheaderList {
+    border: none !important;
+}
+
+.listIcon {
+    color: #BFBFBF;
+}
+
+.listItem {
     margin: 10px;
     border: 1px solid #E5E5E5 !important;
     border-radius: 4px !important;
@@ -19,18 +32,49 @@
     transition: box-shadow 0.4s, background-color 0.3s !important;
 }
 
-.projects:hover {
-    box-shadow: 5px 0px 20px rgba(0, 0, 0, .2) !important;
+.listPanelItem {
+    border-left: 1px solid #cccccc !important;
+    border-right: 1px solid #cccccc !important;
 }
 
-.foldericon {
-    color: #BFBFBF;
-}
-
-.directoryinput {
+.listPanelItemToolbar {
     cursor: pointer;
 }
 
+.loginBlock {
+    background-color: #374755 !important;
+    height: 10%;
+}
+
 .messageStrip {
-    margin: 1rem !important;
+    margin-left: 1rem !important;
+    margin-right: 1rem !important;
+    margin-bottom: 1rem !important;
+    margin-top: 0.5rem !important;
+}
+
+.toolbar {
+    border-bottom: 0 !important;
+}
+
+.userPopover {
+    background-color: #3f5161 !important
+}
+
+
+/* SAP classes */
+.sapMLIBFocusable:focus {
+    outline: 0 !important;
+    outline-offset: 0 !important;
+}
+
+.sapMTBActive:focus {
+    outline: 0 !important;
+    outline-offset: 0 !important;
+}
+
+.sapUiIcon:focus {
+    outline-width: 0 !important;
+    outline-style: 0 !important;
+    outline-offset: 0 !important;
 }

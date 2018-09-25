@@ -18,12 +18,11 @@
                             hideText="false"
                             type="Emphasized"
                             visible="{path: 'status', formatter: '.formatter.projectActivateButton'}"/>
-						<ObjectPageHeaderActionButton
-							text="{i18n>BUT_EDIT}"
+                        <ObjectPageHeaderActionButton
+                            text="{i18n>BUT_EDIT}"
                             press="onEditProject"
-							hideText="false"
-							type="Emphasized"
-                            visible="false"/>
+                            hideText="false"
+                            type="Transparent"/>
 						<ObjectPageHeaderActionButton
 							text="{i18n>BUT_DELETE}"
                             press="onRemoveProject"
@@ -38,7 +37,6 @@
                         <ObjectPageSubSection title="{i18n>SECT_STATUS}">
                             <blocks>
                                 <f:SimpleForm
-                                    visible="{viewModel>/displayMode}"
                                     layout="ResponsiveGridLayout">
                                     <f:content>
                                         <m:Label text="{i18n>LABEL_STATUS}"/>
@@ -60,7 +58,6 @@
                         <ObjectPageSubSection title="{i18n>SECT_ADDR_INFO}">
                             <blocks>
                                 <f:SimpleForm
-                                    visible="{viewModel>/displayMode}"
                                     layout="ResponsiveGridLayout">
                                     <f:content>
                                         <m:Label text="{i18n>LABEL_STREET_AND_NO}"/>
@@ -78,7 +75,6 @@
                         <ObjectPageSubSection title="{i18n>SECT_GPS_INFO}">
                             <blocks>
                                 <f:SimpleForm
-                                    visible="{viewModel>/displayMode}"
                                     layout="ResponsiveGridLayout">
                                     <f:content>
                                         <m:Label text="{i18n>LABEL_LATITUDE}"/>

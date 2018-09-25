@@ -7,21 +7,10 @@ const config = require('../config')
 const drive = require('./drive')
 
 const oauth2Client = new google.auth.OAuth2(
-    process.env.GOOGLE_CLIENT_ID,
-    process.env.GOOGLE_CLIENT_SECRET,
-    process.env.GOOGLE_REDIRECT_URI
+    config.GOOGLE.CLIENT_ID,
+    config.GOOGLE.CLIENT_SECRET,
+    config.GOOGLE.REDIRECT_URI
 )
-
-exports.sayHello = () => {
-    return {
-        fs,
-        google,
-        parse,
-        config,
-        drive,
-        oauth2Client
-    }
-}
 
 exports.getAuthClient = () => {
     return oauth2Client
@@ -30,16 +19,17 @@ exports.getAuthClient = () => {
 exports.loginUser = () => {
     return new Promise(async (resolve, reject) => {
         fs.readFile(config.GOOGLE.TOKEN_PATH, async (error, token) => {
-            console.log(token)
-            console.log(error)
             if (error) return reject(error)
             /* TODO: Implement functionality when refresh token is missing*/
 
             else {
                 oauth2Client.setCredentials(JSON.parse(token));
-
-                const user = await drive.getUserInfo()
-                resolve(user)
+                try {
+                    const user = await drive.getUserInfo()
+                    resolve(user)
+                } catch (error) {
+                    reject(error)
+                }
             }
         })
     })
@@ -113,7 +103,7 @@ signInWithPopup = () => {
         }
 
         authWindow.on('closed', () => {
-            throw new Error()
+            reject(new Error())
         })
 
         authWindow.webContents.on('will-navigate', (event, url) => {

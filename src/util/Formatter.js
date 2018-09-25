@@ -43,6 +43,12 @@ sap.ui.define([], function () {
             else if (status === 1) return 'Warning';
         },
 
+        projectUser: function (userId, users) {
+            const user = this.getView().getModel('users').getProperty(`/${userId}`)
+
+            if (user) return user.name
+        },
+
         saveButton: function (project, address, gps, viewModel) {
             // console.log(project);
             // console.log(address);

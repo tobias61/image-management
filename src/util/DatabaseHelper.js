@@ -29,10 +29,17 @@ sap.ui.define([
         await userRef.set({
             email: driveUser.emailAddress,
             name: driveUser.displayName,
-            role: 'user'
+            role: 'user',
+            superuser: false
         })
 
         return userRef.get()
+    }
+
+    DatabaseHelper.updateUserRole = (userId, role) => {
+        const userRef = db.collection('users').doc(userId)
+
+        return userRef.update({ role })
     }
 
     /**
@@ -50,7 +57,7 @@ sap.ui.define([
         gps: null
     }
 
-    const projectsModel = new JSONModel();
+    const projectsModel = new JSONModel()
     
     DatabaseHelper.attachProjectsListener = (userId, handler) => {
         db.collection('projects').where('user', '==', userId)
@@ -75,9 +82,11 @@ sap.ui.define([
     DatabaseHelper.isProjectValid = (project) => {
         return new Promise(async (resolve, reject) => {
             try {
-                const query = await db.collection('projects').where('title', '==', project.title).get()
-                if (query.docs.length === 0) resolve(true)
-                else resolve(false)
+                const query = await db.collection('projects').where('title', '==', project.title).where('user', '==', project.user).get()
+                for (let i = 0; i < query.docs.length; i++) {
+                    if (query.docs[i].data().created !== project.created) resolve(false)
+                }
+                resolve(true)
             } catch (error) {
                 reject(error)
             } 
@@ -93,12 +102,41 @@ sap.ui.define([
     }
 
     DatabaseHelper.updateProject = (project, projectId, properties) => {
-        let updateObj = {}
-        properties.forEach(property => {
-            updateObj[property] = project[property];
-        })
+        if (properties) {
+            let updateObj = {}
+            properties.forEach(property => {
+                updateObj[property] = project[property];
+            })
 
-        return db.collection('projects').doc(projectId).update(updateObj)
+            return db.collection('projects').doc(projectId).update(updateObj)
+        } else {
+            return db.collection('projects').doc(projectId).update(project)
+        }
+    }
+
+    /**
+     * admin realted database accesses
+     */
+    const adminProjectsModel = new JSONModel()
+
+    const userModel = new JSONModel()
+
+    DatabaseHelper.attachAdminProjectsListener = (handler) => {
+        db.collection('projects')
+            .onSnapshot(handler)
+    }
+
+    DatabaseHelper.attachUsersListener = (handler) => {
+        db.collection('users')
+            .onSnapshot(handler)
+    }
+
+    DatabaseHelper.getAdminProjects = () => {
+        return adminProjectsModel;
+    }
+
+    DatabaseHelper.getUsers = () => {
+        return userModel;
     }
 
     /**

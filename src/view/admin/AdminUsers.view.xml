@@ -1,0 +1,67 @@
+<!DOCTYPE xml>
+<core:View xmlns:core="sap.ui.core" controllerName="geosort.controller.admin.AdminUsers" xmlns="sap.m" xmlns:f="sap.ui.layout.form" xmlns:l="sap.ui.layout">
+    <Page class="sapUiContentPadding" showFooter="true" showHeader="false" floatingFooter="true" enableScrolling="true">
+        <content>
+            <VBox fitContainer="true">
+                <items>
+                    <List
+                        id="usersList"
+                        busyIndicatorDelay="0"
+                        backgroundDesign="Translucent"
+                        noDataText="{i18n>TXT_NO_USERS}"
+                        showSeparators="None"
+                        items="{
+                            path: '/',
+                            sorter: [{
+                                path: 'role',
+                                descending: false,
+                                group: true
+                            }, {
+                                path: 'name',
+                                descending: false
+                            }],
+                            groupHeaderFactory: '.getGroupHeader'
+                        }">
+                        <headerToolbar>
+                            <OverflowToolbar>
+                                <content>
+                                    <Title text="{i18n>LIST_TITLE_USERS}">
+                                        <layoutData>
+                                            <OverflowToolbarLayoutData priority="NeverOverflow"/>
+                                        </layoutData>
+                                    </Title>
+                                    <ToolbarSpacer/>
+                                    <SearchField id="searchfield" width="50%" placeholder="{i18n>SEARCH_PLACEHOLDER_USERS}" search="onSearchUsers">
+                                        <layoutData>
+                                            <OverflowToolbarLayoutData priority="High"/>
+                                        </layoutData>
+                                    </SearchField>
+                                </content>
+                            </OverflowToolbar>
+                        </headerToolbar>
+                        <CustomListItem class="listItem sapMLIBHoverable" type="Inactive">
+                            <HBox class="sapUiSmallMargin" justifyContent="SpaceBetween">
+                                <HBox>
+                                    <core:Icon src="sap-icon://person-placeholder" class="listIcon" size="2rem"/>
+                                    <VBox class="sapUiSmallMarginBegin">
+                                        <Title text="{name}"/>
+                                        <Text text="{email}"/>
+                                    </VBox>
+                                </HBox>
+                                <HBox>
+                                    <Select class="sapUiSmallMarginEnd" change="onRoleChanged" enabled="{= ${name} !== ${app>/user/name} &amp;&amp; (${app>/user/superuser} || (${app>/user/role} === 'admin' &amp;&amp; ${role} === 'user'))}" selectedKey="{role}">
+                                        <core:Item key="admin" text="{i18n>LABEL_ADMIN}"/>
+                                        <core:Item key="user" text="{i18n>LABEL_USER}"/>
+                                    </Select>
+                                    <Button text="{i18n>BUT_DELETE}" enabled="false" type="Transparent"/>
+                                </HBox>
+                            </HBox>
+                        </CustomListItem>
+                    </List>
+                </items>
+            </VBox>
+        </content>
+        <footer>
+        </footer>
+    </Page>
+</core:View>
