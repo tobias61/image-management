@@ -1,8 +1,10 @@
 const axios = require('axios')
 const moment = require('moment')
 
+const config = require('../config')
+
 const googleMapsClient = require('@google/maps').createClient({
-    key: process.env.GOOGLE_API_KEY,
+    key: config.GOOGLE.API_KEY,
     Promise: Promise
 })
 

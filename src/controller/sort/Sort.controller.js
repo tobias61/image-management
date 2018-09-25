@@ -27,14 +27,17 @@ sap.ui.define([
 
             DatabaseHelper.attachProjectsListener(this.getOwnerComponent().getModel('app').getProperty('/user/id'), function (snapshot) {
                 this.getView().byId('projectsList').setBusy(true)
+                
+                let projects = {}
+                snapshot.forEach(doc => {
+                    projects[doc.id] = doc.data()
+                })
+                DatabaseHelper.getProjects().setData(projects)
+
                 if (!this.getOwnerComponent().getModel('app').getProperty('/projects/isListenerAttached')) {
                     this.getOwnerComponent().getModel('app').setProperty('/projects/isListenerAttached', true)
-                    let projects = {}
-                    snapshot.forEach(doc => {
-                        projects[doc.id] = doc.data()
-                    })
-                    DatabaseHelper.getProjects().setData(projects)
                 }
+
 				this.getView().byId('projectsList').setBusy(false)
             }.bind(this))
             
@@ -145,6 +148,24 @@ sap.ui.define([
             evt.getSource().getParent().close()
         },
 
+        onExpandProject: function (evt) {
+			evt.getSource().getParent().setExpanded(!evt.getSource().getParent().getExpanded())
+        },
+        
+        onPanelExpanding: function (evt) {
+			if (evt.getParameter('expand')) {
+				let listItems = this.getView().byId('projectsList').getItems()
+
+				listItems = listItems.filter(listItem => !(listItem instanceof GroupHeaderListItem))
+				listItems = listItems.filter(listItem => listItem.getContent()[0].getExpanded())
+				listItems.forEach(listItem => {
+					const panel = listItem.getContent()[0]
+
+					if (evt.getSource() !== panel) panel.setExpanded(!panel.getExpanded())
+				})
+			}
+		},
+
         getGroupHeader: function (group) {
             let groupTitle = (group.key === 0) ? this.i18n.getText('LIST_TITLE_ACTIVE_PROJECTS') : this.i18n.getText('LIST_TITLE_FINISHED_PROJECTS');
 
@@ -152,7 +173,7 @@ sap.ui.define([
                 title: groupTitle,
                 upperCase: true
             });
-            groupHeader.addStyleClass('groupheader');
+            groupHeader.addStyleClass('groupheaderPanelList');
 
             return groupHeader;
         },

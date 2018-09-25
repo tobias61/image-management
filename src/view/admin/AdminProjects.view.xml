@@ -1,0 +1,111 @@
+<!DOCTYPE xml>
+<core:View xmlns:core="sap.ui.core" controllerName="geosort.controller.admin.AdminProjects" xmlns="sap.m" xmlns:f="sap.ui.layout.form" xmlns:l="sap.ui.layout">
+    <Page class="sapUiContentPadding" showFooter="true" showHeader="false" floatingFooter="true" enableScrolling="true">
+        <content>
+            <VBox fitContainer="true">
+                <items>
+                    <List
+                        id="projectsList"
+                        busyIndicatorDelay="0"
+                        backgroundDesign="Translucent"
+                        noDataText="{i18n>TXT_NO_PROJECTS}"
+                        showSeparators="None"
+                        items="{
+                            path: '/',
+                            sorter: [{
+                                path: 'status',
+                                descending: false,
+                                group: true
+                            }, {
+                                path: 'title',
+                                descending: false
+                            }],
+                            groupHeaderFactory: '.getGroupHeader'
+                        }">
+                        <headerToolbar>
+                            <OverflowToolbar>
+                                <content>
+                                    <Title text="{i18n>LIST_TITLE_PROJECTS}">
+                                        <layoutData>
+                                            <OverflowToolbarLayoutData priority="NeverOverflow"/>
+                                        </layoutData>
+                                    </Title>
+                                    <ToolbarSpacer/>
+                                    <MultiComboBox
+                                        id="userSelection"
+                                        width="30%"
+                                        placeholder="{i18n>SEARCH_PLACEHOLDER_USER}"
+                                        selectionFinish="onUsersSelected"
+                                        items="{
+                                            path: 'users>/',
+                                            sorter: { path: 'name' }
+                                        }">
+                                        <core:Item key="{users>name}" text="{users>name}"/>
+                                        <layoutData>
+                                            <OverflowToolbarLayoutData priority="Low"/>
+                                        </layoutData>
+                                    </MultiComboBox>
+                                    <SearchField id="searchfield" width="40%" placeholder="{i18n>SEARCH_PLACEHOLDER_TITLE}" search="onSearchProjects">
+                                        <layoutData>
+                                            <OverflowToolbarLayoutData priority="High"/>
+                                        </layoutData>
+                                    </SearchField>
+                                </content>
+                            </OverflowToolbar>
+                        </headerToolbar>
+                        <CustomListItem class="listPanelItem sapMLIBHoverable" type="Inactive">
+                            <Panel expandable="true" expanded="false" expand="onPanelExpanding">
+                                <headerToolbar>
+                                    <OverflowToolbar class="listPanelItemToolbar" height="3rem" active="true" press="onExpandProject">
+                                        <content>
+                                            <VBox>
+                                                <Title text="{title}"/>
+                                                <Text text="{parts: ['user', 'users>/'], formatter: '.formatter.projectUser'}"/>
+                                            </VBox>
+                                            <ToolbarSpacer/>
+                                            <Button text="{i18n>BUT_ACTIVATE_PROJECT}" type="Transparent" press="onActivateProject" visible="{path: 'status', formatter: '.formatter.projectActivateButton'}"/>
+                                            <Button text="{i18n>BUT_FINISH_PROJECT}" type="Transparent" press="onFinishProject" visible="{path: 'status', formatter: '.formatter.projectFinishButton'}"/>
+                                            <Button text="{i18n>BUT_TRANSFER_PROJECT}" type="Transparent" press="onTransferProject"/>
+                                            <Button text="{i18n>BUT_DELETE}" press="onRemoveProject" type="Transparent"/>
+                                        </content>
+                                    </OverflowToolbar>
+                                </headerToolbar>
+                                <content>
+                                    <f:SimpleForm
+                                        layout="ResponsiveGridLayout"
+                                        columnsL="2"
+                                        columnsM="2">
+                                        <f:content>
+                                            <core:Title text="{i18n>FORM_CONT_TITLE_PROJECT_INFO}"/>
+                                                <Label text="{i18n>LABEL_USER}"/>
+                                                <Text text="{parts: ['user', 'users>/'], formatter: '.formatter.projectUser'}"/>
+                                                <Label text="{i18n>LABEL_STATUS}"/>
+                                                <ObjectStatus text="{path: 'status', formatter: '.formatter.projectStatusText'}" state="{path: 'status', formatter: '.formatter.projectStatusColor'}"/>
+                                                <Label text="{i18n>LABEL_DIR_NAME}"/>
+                                                <Text text="{directory}"/>
+                                                <Label text="{i18n>LABEL_CREATED}"/>
+                                                <Text text="{path: 'created', formatter: '.formatter.projectDates'}"/>
+                                                <Label text="{i18n>LABEL_FINISHED}"/>
+                                                <Text text="{path: 'finished', formatter: '.formatter.projectDates'}"/>
+                                            <core:Title text="{i18n>FORM_CONT_TITLE_LOCATION}"/>
+                                                <Label text="{i18n>LABEL_STREET_AND_NO}"/>
+                                                <Text text="{address/street} {address/streetNo}"/>
+                                                <Label text="{i18n>LABEL_ZIP_AND_CITY}"/>
+                                                <Text text="{address/zipCode} {address/city}"/>
+                                                <Label text="{i18n>LABEL_LATITUDE}"/>
+                                                <Text text="{path: 'gps/lat', type: 'sap.ui.model.type.Float'}"/>
+                                                <Label text="{i18n>LABEL_LONGITUDE}"/>
+                                                <Text text="{path: 'gps/lng', type: 'sap.ui.model.type.Float'}"/>
+                                        </f:content>
+                                    </f:SimpleForm>
+                                </content>
+                            </Panel>
+                        </CustomListItem>
+                    </List>
+                </items>
+            </VBox>
+        </content>
+        <footer>
+        </footer>
+    </Page>
+</core:View>

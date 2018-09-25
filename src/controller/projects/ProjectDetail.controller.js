@@ -18,23 +18,23 @@ sap.ui.define([
 			this.router = UIComponent.getRouterFor(this)
 			this.i18n = this.getOwnerComponent().getModel('i18n').getResourceBundle()
 
-			this.router.getRoute('projectDetail').attachMatched(this.onRouteMatched, this)
-
 			this.getView().setModel(DatabaseHelper.getProjects())
+
+			this.router.getRoute('projectDetail').attachMatched(this.onRouteMatched, this)
 		},
 
 		onRouteMatched: function (evt) {
 			const args = evt.getParameter('arguments');
 
 			this.getView().bindElement('/' + args.id);
+		},
 
-			if (!this.getView().getModel('viewModel')) {
-				this.getView().setModel(new JSONModel(), 'viewModel');
-			}
+		onEditProject: function (evt) {
+			const projectId = this.getView().getElementBinding().getPath().slice(1)
 
-			this.getView().getModel('viewModel').setData({
-				displayMode: true
-			});
+			this.router.navTo('projectEdit', {
+				id: projectId
+			})
 		},
 
 		onActivateProject: async function (evt) {

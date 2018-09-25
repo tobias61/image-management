@@ -10,24 +10,30 @@
                         <OverflowToolbarLayoutData priority="NeverOverflow"/>
                     </layoutData>
                 </Button>
-                <Image class="sapUiSmallMarginBegin" height="2rem" src="images/logo_Baudirekt.png"/>
+                <Image class="sapUiSmallMarginBegin" height="2rem" src="images/logo_Baudirekt.png">
+                    <layoutData>
+                        <OverflowToolbarLayoutData priority="Disappear" />
+                    </layoutData>
+                </Image>
                 <ToolbarSpacer/>
-                <core:Icon src="sap-icon://map">
+                <!-- <core:Icon src="sap-icon://map">
                     <core:layoutData>
                         <OverflowToolbarLayoutData group="1" priority="Disappear" />
                     </core:layoutData>
-                </core:Icon>
-                <Text text="{i18n>APP_TITLE}" wrapping="false">
+                </core:Icon> -->
+                <!-- <Text text="{i18n>APP_TITLE}" wrapping="false">
                     <layoutData>
                         <OverflowToolbarLayoutData group="1" priority="Disappear" />
                     </layoutData>
-                </Text>
-                <ToolbarSpacer/>
-				<Button visible="{app>/isLoggedIn}" text="{app>/user/name}" type="Transparent" press="onUserPress">
-					<layoutData>
+                </Text> -->
+                <!-- <ToolbarSpacer/> -->
+                <!-- <Text visible="{= !${app>/isLoggedIn} }" text="{i18n>TXT_LOGIN_REQUIRED}"/> -->
+				<Button visible="{app>/isLoggedIn}" text="{app>/user/name}" type="Transparent" press="onUserPress"/>
+                <OverflowToolbarButton class="sapUiSmallMarginBegin" text="{i18n>BUT_QUIT}" press="onQuitApp" type="Transparent" icon="sap-icon://decline">
+                	<layoutData>
 						<OverflowToolbarLayoutData priority="NeverOverflow" />
 					</layoutData>
-				</Button>
+				</OverflowToolbarButton>
             </tnt:ToolHeader>
         </tnt:header>
         <tnt:sideContent>
@@ -38,10 +44,16 @@
                         <tnt:NavigationListItem key="login" visible="{= !${app>/isLoggedIn} }" text="{i18n>NAV_LOGIN}" icon="sap-icon://visits"/>
                         <tnt:NavigationListItem key="projects" visible="{app>/isLoggedIn}" text="{i18n>NAV_PROJECTS}" icon="sap-icon://list"/>
                         <tnt:NavigationListItem key="sort" visible="{app>/isLoggedIn}" text="{i18n>NAV_GEOSORT}" icon="sap-icon://locate-me"/>
+                        <tnt:NavigationListItem key="admin" visible="{= ${app>/isLoggedIn} &amp;&amp; ${app>/user/role} === 'admin'}" text="{i18n>NAV_ADMIN}" icon="sap-icon://settings">
+                            <tnt:NavigationListItem key="adminUsers" text="{i18n>NAV_USER_MAINTENANCE}" icon="sap-icon://role"/>
+                            <tnt:NavigationListItem key="adminProjects" text="{i18n>NAV_ADMIN_PROJECTS}" icon="sap-icon://show-edit"/>
+                        </tnt:NavigationListItem>
                     </tnt:NavigationList>
                 </tnt:item>
                 <tnt:fixedItem>
-
+                    <tnt:NavigationList itemSelect="onNavigationItemPressed">
+                        <tnt:NavigationListItem key="help" icon="sap-icon://sys-help" text="{i18n>NAV_HELP}"/>
+                    </tnt:NavigationList>
                 </tnt:fixedItem>
             </tnt:SideNavigation>
         </tnt:sideContent>

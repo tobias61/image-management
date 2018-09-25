@@ -17,7 +17,8 @@ sap.ui.define([
 
 			let appModel = new JSONModel({
 				isLoggedIn: false,
-				projects: { isListenerAttached: false}
+				projects: { isListenerAttached: false },
+				users: { isListenerAttached: false }
 			})
 
 			// appModel.setDefaultBindingMode(sap.ui.model.BindingMode.OneWay)

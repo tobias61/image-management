@@ -30,23 +30,61 @@
                         backgroundDesign="Translucent"
                         noDataText="{i18n>TXT_NO_PROJECTS}"
                         showSeparators="None"
+                        headerText="{i18n>LIST_TITLE_PROJECTS}"
                         items="{
                             path: 'projects>/',
-                            sorter: {
+                            sorter: [{
                                 path: 'status',
                                 descending: false,
                                 group: true
-                            },
+                            }, {
+                                path: 'title',
+                                descending: false
+                            }],
                             groupHeaderFactory: '.getGroupHeader'
                         }">
-                        <CustomListItem class="projects sapMLIBHoverable" press="onProjectPress" type="Active">
-                            <HBox class="sapUiSmallMargin">
-                                <core:Icon src="{path: 'projects>status', formatter: '.formatter.projectIcon'}" class="foldericon" size="2rem"/>
-                                <VBox class="sapUiSmallMarginBegin">
-                                    <Link text="{projects>title}" press="onProjectPress"/>
-                                    <Text text="{projects>directory}"/>
-                                </VBox>
-                            </HBox>
+                        <CustomListItem class="listPanelItem sapMLIBHoverable" type="Inactive">
+                            <Panel expandable="true" expanded="false" expand="onPanelExpanding">
+                                <headerToolbar>
+                                    <OverflowToolbar class="listPanelItemToolbar" height="3rem" active="true" press="onExpandProject">
+                                        <content>
+                                            <VBox>
+                                                <Title text="{projects>title}"/>
+                                                <Text text="{projects>directory}"/>
+                                            </VBox>
+                                            <ToolbarSpacer/>
+                                            <Button text="{i18n>BUT_EDIT}" type="Transparent"/>
+                                        </content>
+                                    </OverflowToolbar>
+                                </headerToolbar>
+                                <content>
+                                    <f:SimpleForm
+                                        layout="ResponsiveGridLayout"
+                                        columnsL="2"
+                                        columnsM="2">
+                                        <f:content>
+                                            <core:Title text="{i18n>FORM_CONT_TITLE_PROJECT_INFO}"/>
+                                                <Label text="{i18n>LABEL_STATUS}"/>
+                                                <ObjectStatus text="{path: 'projects>status', formatter: '.formatter.projectStatusText'}" state="{path: 'projects>status', formatter: '.formatter.projectStatusColor'}"/>
+                                                <Label text="{i18n>LABEL_DIR_NAME}"/>
+                                                <Text text="{projects>directory}"/>
+                                                <Label text="{i18n>LABEL_CREATED}"/>
+                                                <Text text="{path: 'projects>created', formatter: '.formatter.projectDates'}"/>
+                                                <Label text="{i18n>LABEL_FINISHED}"/>
+                                                <Text text="{path: 'projects>finished', formatter: '.formatter.projectDates'}"/>
+                                            <core:Title text="{i18n>FORM_CONT_TITLE_LOCATION}"/>
+                                                <Label text="{i18n>LABEL_STREET_AND_NO}"/>
+                                                <Text text="{projects>address/street} {projects>address/streetNo}"/>
+                                                <Label text="{i18n>LABEL_ZIP_AND_CITY}"/>
+                                                <Text text="{projects>address/zipCode} {projects>address/city}"/>
+                                                <Label text="{i18n>LABEL_LATITUDE}"/>
+                                                <Text text="{path: 'projects>gps/lat', type: 'sap.ui.model.type.Float'}"/>
+                                                <Label text="{i18n>LABEL_LONGITUDE}"/>
+                                                <Text text="{path: 'projects>gps/lng', type: 'sap.ui.model.type.Float'}"/>
+                                        </f:content>
+                                    </f:SimpleForm>
+                                </content>
+                            </Panel>
                         </CustomListItem>
                     </List>
                 </items>

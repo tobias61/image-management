@@ -1,24 +1,25 @@
 <!DOCTYPE xml>
-<core:View xmlns:core="sap.ui.core" controllerName="geosort.controller.projects.ProjectCreate" xmlns="sap.m" xmlns:u="sap.ui.unified" xmlns:l="sap.ui.layout" xmlns:f="sap.ui.layout.form">
-    <Page id="page" title="{i18n>PAGE_TITLE_NEW_PROJECT}" showFooter="true" floatingFooter="true" showHeader="true">
+<core:View xmlns:core="sap.ui.core" controllerName="geosort.controller.projects.ProjectEdit" xmlns="sap.m" xmlns:u="sap.ui.unified" xmlns:l="sap.ui.layout" xmlns:f="sap.ui.layout.form">
+    <Page id="page" title="{title}" showFooter="true" floatingFooter="true" showHeader="true">
         <content>
             <VBox id="formContainer" fitContainer="true">
-                <MessageStrip class="sapUiSmallMarginTop sapUiSmallMarginBegin sapUiSmallMarginEnd" showIcon="true" state="None" text="{i18n>MSG_STRIP_METHOD_CHANGE}"/>
+                <MessageStrip class="sapUiSmallMarginTop sapUiSmallMarginBegin sapUiSmallMarginEnd" showIcon="true" type="None" text="{i18n>MSG_STRIP_METHOD_CHANGE}"/>
+                <MessageStrip visible="{view>/dataChanged}" class="sapUiSmallMarginBegin sapUiSmallMarginEnd sapUiTinyMarginTop" showIcon="true" type="Warning" text="{i18n>MSG_STRIP_DATA_CHANGED}"/>
                 <MessageStrip visible="{view>/validationError}" class="sapUiSmallMarginBegin sapUiSmallMarginEnd sapUiTinyMarginTop" showIcon="true" type="Error" text="{i18n>MSG_STRIP_VALIDATION_ERROR}"/>
                 <f:SimpleForm layout="ResponsiveGridLayout" emptySpanL="3" editable="true">
                     <f:content>
                         <core:Title text="{i18n>FORM_CONT_TITLE_PROJECT_INFO}" />
                         <Label text="{i18n>LABEL_PROJECT_TITLE}" />
-                        <Input fieldGroupIds="fgProject" value="{path: 'project>/title', type: 'sap.ui.model.type.String', constraints: {minLength: 3}}"/>
+                        <Input fieldGroupIds="fgProject" value="{path: 'title', type: 'sap.ui.model.type.String', constraints: {minLength: 3}}"/>
                         <Label text="{i18n>LABEL_OUTPUT_DIRECTORY}" />
-                        <Input fieldGroupIds="fgProject" value="{path: 'project>/directory', type: 'sap.ui.model.type.String', constraints: {minLength: 1}}"/>
+                        <Input fieldGroupIds="fgProject" value="{path: 'directory', type: 'sap.ui.model.type.String', constraints: {minLength: 1}}"/>
                         <Button text="{i18n>BUT_PICK_DIR}" press="onPickDirectory">
                             <layoutData>
                                 <l:GridData span="L2 M3" />
                             </layoutData>
                         </Button>
                         <Label text="{i18n>LABEL_LOCATION_METHOD}" />
-                        <RadioButtonGroup selectedIndex="{project>/locationMethod}">
+                        <RadioButtonGroup selectedIndex="{locationMethod}">
                             <buttons>
                                 <RadioButton id="RB1" text="{i18n>RB_ADDR_INFO}" />
                                 <RadioButton id="RB2" text="{i18n>RB_GPS_DATA}" />
@@ -27,39 +28,39 @@
                         </RadioButtonGroup>
                     </f:content>
                 </f:SimpleForm>
-                <f:SimpleForm visible="{= ${project>/locationMethod} === 0}" layout="ResponsiveGridLayout" emptySpanL="3" editable="true">
+                <f:SimpleForm visible="{= ${locationMethod} === 0}" layout="ResponsiveGridLayout" emptySpanL="3" editable="true">
                     <f:content>
                         <core:Title text="{i18n>FORM_CONT_TITLE_ADDR_INFO}" />
                         <Label text="{i18n>LABEL_STREET_AND_NO}" />
-                        <Input fieldGroupIds="fgAddress" value="{path: 'address>/street', type: 'sap.ui.model.type.String', constraints: {minLength: 3, search: '^[öÖäÄüÜßa-zA-Z -]*$'}}"/>
-                        <Input fieldGroupIds="fgAddress" value="{path: 'address>/streetNo', type: 'sap.ui.model.type.Integer', constraints: {minimum: 1}}">
+                        <Input fieldGroupIds="fgAddress" value="{path: 'address/street', type: 'sap.ui.model.type.String', constraints: {minLength: 3, search: '^[öÖäÄüÜßa-zA-Z -]*$'}}"/>
+                        <Input fieldGroupIds="fgAddress" value="{path: 'address/streetNo', type: 'sap.ui.model.type.Integer', constraints: {minimum: 1}}">
                             <layoutData>
                                 <l:GridData span="L1 M2" />
                             </layoutData>
                         </Input>
                         <Label text="{i18n>LABEL_ZIP_AND_CITY}" />
-                        <Input fieldGroupIds="fgAddress" value="{path: 'address>/zipCode', type: 'sap.ui.model.type.String', constraints: {minLength: 5, maxLength: 5, search: '^[0-9]*$'}}">
+                        <Input fieldGroupIds="fgAddress" value="{path: 'address/zipCode', type: 'sap.ui.model.type.String', constraints: {minLength: 5, maxLength: 5, search: '^[0-9]*$'}}">
                             <layoutData>
                                 <l:GridData span="L1 M2" />
                             </layoutData>
                         </Input>
-                        <Input fieldGroupIds="fgAddress" value="{path: 'address>/city', type: 'sap.ui.model.type.String', constraints: {minLength: 3, search: '^[öÖäÄüÜßa-zA-Z -]*$'}}"/>
+                        <Input fieldGroupIds="fgAddress" value="{path: 'address/city', type: 'sap.ui.model.type.String', constraints: {minLength: 3, search: '^[öÖäÄüÜßa-zA-Z -]*$'}}"/>
                     </f:content>
                 </f:SimpleForm>
-                <f:SimpleForm visible="{= ${project>/locationMethod} === 1}" layout="ResponsiveGridLayout" emptySpanL="3" editable="true">
+                <f:SimpleForm visible="{= ${locationMethod} === 1}" layout="ResponsiveGridLayout" emptySpanL="3" editable="true">
                     <f:content>
                         <core:Title text="{i18n>FORM_CONT_TITLE_GPS_DATA}"/>
                         <Label text="{i18n>LABEL_LATITUDE}"/>
-                        <Input fieldGroupIds="fgGps" value="{path: 'gps>/lat', type: 'sap.ui.model.type.Float'}"/>
+                        <Input fieldGroupIds="fgGps" value="{path: 'gps/lat', type: 'sap.ui.model.type.Float'}"/>
                         <Label text="{i18n>LABEL_LONGITUDE}"/>
-                        <Input fieldGroupIds="fgGps" value="{path: 'gps>/lng', type: 'sap.ui.model.type.Float'}"/>
+                        <Input fieldGroupIds="fgGps" value="{path: 'gps/lng', type: 'sap.ui.model.type.Float'}"/>
                     </f:content>
                 </f:SimpleForm>
-                <f:SimpleForm visible="{= ${project>/locationMethod} === 2}" layout="ResponsiveGridLayout" emptySpanL="3" editable="true">
+                <f:SimpleForm visible="{= ${locationMethod} === 2}" layout="ResponsiveGridLayout" emptySpanL="3" editable="true">
                     <f:content>
                         <core:Title text="{i18n>FORM_CONT_TITLE_IMAGE}"/>
                         <Label text="{i18n>LABEL_IMAGE_SELECTION}"/>
-                        <Input fieldGroupIds="fgImage" value="{path: 'image>/imagePath', type: 'sap.ui.model.type.String', constraints: {minLength: 1}}"/> 
+                        <Input fieldGroupIds="fgImage" value="{path: 'imagePath', type: 'sap.ui.model.type.String', constraints: {minLength: 1}}"/> 
                         <Button text="{i18n>BUT_PICK_IMAGE}" press="onPickImage">
                             <layoutData>
                                 <l:GridData span="L2 M3" />
@@ -73,7 +74,7 @@
             <Toolbar>
                 <ToolbarSpacer/>
                 <Button text="{i18n>BUT_SAVE}" press="onSaveProject" type="Emphasized" />
-                <Button text="{i18n>BUT_CANCEL}" press="onCancelCreation" type="Transparent" />
+                <Button text="{i18n>BUT_CANCEL}" press="onCancelEdit" type="Transparent" />
             </Toolbar>
         </footer>
     </Page>

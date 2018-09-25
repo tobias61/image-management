@@ -24,20 +24,21 @@ sap.ui.define([
 			DatabaseHelper.attachProjectsListener(this.getOwnerComponent().getModel('app').getProperty('/user/id'), function (snapshot) {
 				this.getView().byId('projectsList').setBusy(true)
 
+				let projects = {}
+				snapshot.forEach(doc => {
+					projects[doc.id] = doc.data()
+				})
+				DatabaseHelper.getProjects().setData(projects)
+
                 if (!this.getOwnerComponent().getModel('app').getProperty('/projects/isListenerAttached')) {
                     this.getOwnerComponent().getModel('app').setProperty('/projects/isListenerAttached', true)
-                    let projects = {}
-                    snapshot.forEach(doc => {
-                        projects[doc.id] = doc.data()
-                    })
-					DatabaseHelper.getProjects().setData(projects)
 					
-					if (Object.keys(this.getView().getModel().getData()).length > 0) {
-						this.getView().byId('projectsList').setSelectedItem(this.getView().byId('projectsList').getItems()[0])
-						this.router.navTo('projectDetail', {
-							id: Object.keys(this.getView().getModel().getData())[0]
-						})
-					}
+					// if (Object.keys(this.getView().getModel().getData()).length > 0) {
+					// 	this.getView().byId('projectsList').setSelectedItem(this.getView().byId('projectsList').getItems()[0])
+					// 	this.router.navTo('projectDetail', {
+					// 		id: Object.keys(this.getView().getModel().getData())[0]
+					// 	})
+					// }
 				}
 
 				this.getView().byId('projectsList').setBusy(false)
@@ -71,7 +72,6 @@ sap.ui.define([
 		},
 
 		onProjectSelected: function (evt) {
-			console.log(evt.getParameter('listItem').getBindingContext())
 			const path = evt.getParameter('listItem').getBindingContext().getPath()
 
 			this.router.navTo('projectDetail', {
