@@ -29,6 +29,10 @@ sap.ui.define([
         }, 
         
         onRouteMatched: function (evt) {
+            const query = evt.getParameter('arguments')['?query']
+
+            if (query && query.origin) this.origin = query.origin
+
             this.getView().getModel('view').setData({
                 dataChanged: false,
                 validationError: false
@@ -101,20 +105,36 @@ sap.ui.define([
 
 			try {
 				await DatabaseHelper.updateProject(project, projectId)
-				NotificationHelper.toast(this.i18n.getText('MSG_UPDATE_PROJECT_SUCCESS'))
-				this.router.navTo('projectDetail', {
-					id: projectId
-				})
-			} catch (error) {
+                NotificationHelper.toast(this.i18n.getText('MSG_UPDATE_PROJECT_SUCCESS'))
+                if (this.origin) {
+                    this.router.navTo(this.origin, {
+                        query: {
+                            extend: projectId
+                        }
+                    })
+                    this.origin = null
+                }
+                else {
+                    this.router.navTo('projects', {
+                        query: {
+                            extend: projectId
+                        }
+                    })
+                }
+            } catch (error) {
 				NotificationHelper.error(this.i18n.getText('MSG_UPDATE_PROJECT_ERROR'))
 			}
 			sap.ui.core.BusyIndicator.hide()
         },
 
         onCancelEdit: function (evt) {
-            this.router.navTo('projectDetail', {
-                id: this.getView().getElementBinding().getPath().slice(1)
-            })
+            if (this.origin) {
+                this.router.navTo(this.origin)
+                this.origin = null
+            }
+            else {
+                this.router.navTo('projects')
+            }
 		},
 
 		onPickImage: async function (evt) {

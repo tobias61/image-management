@@ -73,15 +73,7 @@ sap.ui.define([
 		},
 
 		onCancelCreation: function () {
-			const projects = DatabaseHelper.getProjects().getProperty('/');
-
-			if (Object.keys(projects).length !== 0) {
-				this.router.navTo('projectDetail', {
-					id: Object.keys(projects)[0]
-				});
-			} else {
-				this.router.navTo('projects')
-			}
+            this.router.navTo('projects')
 		},
 
 		onPickDirectory: async function (evt) {
@@ -171,11 +163,13 @@ sap.ui.define([
 			}
 
 			try {
-				const response = await DatabaseHelper.saveProject(project)
+                const response = await DatabaseHelper.saveProject(project)
 				NotificationHelper.toast(this.i18n.getText('MSG_ADD_PROJECT_SUCCESS'))
-				this.router.navTo('projectDetail', {
-					id: response.id
-				})
+                this.router.navTo('projects', {
+                    query: {
+                        extend: response.id
+                    }
+                })
 			} catch (error) {
 				NotificationHelper.error(this.i18n.getText('MSG_ADD_PROJECT_ERROR'))
 			}

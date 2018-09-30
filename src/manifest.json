@@ -67,35 +67,25 @@
                     "target": "login"
                 },
                 {
-                    "pattern": "sort",
+                    "pattern": "sort:?query:",
                     "name": "sort",
                     "target": "sort"
                 },
                 {
-                    "pattern": "projects",
+                    "pattern": "projects:?query:",
                     "name": "projects",
-                    "target": [
-                        "splitView",
-                        "projectsList",
-                        "projectsMessagePage"
-                    ],
+                    "target": "projects",
                     "subroutes": [{
-                            "pattern": "projects/create",
-                            "name": "projectCreate",
-                            "target": "projectCreate"
-                        },
-                        {
-                            "pattern": "projects/detail/{id}",
-                            "name": "projectDetail",
-                            "target": "projectDetail"
-                        },
-                        {
-                            "pattern": "projects/edit/{id}",
-                            "name": "projectEdit",
-                            "target": "projectEdit"
-                        }
-                    ]
-                }, 
+                        "pattern": "projects/edit/{id}:?query:",
+                        "name": "projectEdit",
+                        "target": "projectEdit"
+                    },
+                    {
+                        "pattern": "projects/create",
+                        "name": "projectCreate",
+                        "target": "projectCreate"
+                    }]
+                },
                 {
                     "pattern": "admin",
                     "name": "admin",
@@ -135,6 +125,21 @@
                     "controlId": "mainContents",
                     "controlAggregation": "pages"
                 },
+                "projects": {
+                    "viewName": "projects.Projects",
+                    "controlId": "mainContents",
+                    "controlAggregation": "pages"
+                },
+                "projectCreate": {
+                    "viewName": "projects.ProjectCreate",
+                    "controlId": "mainContents",
+                    "controlAggregation": "pages"
+                },
+                "projectEdit": {
+                    "viewName": "projects.ProjectEdit",
+                    "controlId": "mainContents",
+                    "controlAggregation": "pages"
+                },
                 "sort": {
                     "viewName": "sort.Sort",
                     "controlId": "mainContents",
@@ -144,31 +149,6 @@
                     "viewName": "SplitView",
                     "controlId": "mainContents",
                     "controlAggregation": "pages"
-                },
-                "projectsMessagePage": {
-                    "viewName": "projects.ProjectsMessagePage",
-                    "parent": "splitView",
-                    "viewLevel": 1
-                },
-                "projectCreate": {
-                    "viewName": "projects.ProjectCreate",
-                    "parent": "splitView",
-                    "viewLevel": 2
-                },
-                "projectDetail": {
-                    "viewName": "projects.ProjectDetail",
-                    "parent": "splitView",
-                    "viewLevel": 2
-                },
-                "projectEdit": {
-                    "viewName": "projects.ProjectEdit",
-                    "parent": "splitView",
-                    "viewLevel": 3
-                },
-                "projectsList": {
-                    "viewName": "projects.ProjectsList",
-                    "parent": "splitView",
-                    "controlAggregation": "masterPages"
                 }
             }
         }
