@@ -67,8 +67,7 @@ sap.ui.define([
                 // snapshot.forEach(doc => {
                 //     projects[doc.id] = doc.data()
                 // })
-                // projectsModel.setData(projects)
-            
+                // projectsModel.setData(projects)      
     }
 
     DatabaseHelper.getEmptyProject = () => {
