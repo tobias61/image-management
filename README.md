@@ -1,7 +1,7 @@
 # GitHub und Projektinstallation
 1. GitHub Desktop installieren: https://desktop.github.com/
 2. GitHub Account erstellen und in GitHub Desktop anmelden
-3. GitHub Desktop > File > Clone Repository und Projekt auswählen
+3. GitHub Desktop > File > Clone Repository und Projekt auswählen (URL: https://github.com/tobias61/image-management.git)
 4. Projekt in Visual Studio Code öffnen
 5. Visual Studio Code > View > Terminal
 6. Befehl "npm install" eingeben
