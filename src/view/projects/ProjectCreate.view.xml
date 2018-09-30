@@ -1,8 +1,11 @@
 <!DOCTYPE xml>
 <core:View xmlns:core="sap.ui.core" controllerName="geosort.controller.projects.ProjectCreate" xmlns="sap.m" xmlns:u="sap.ui.unified" xmlns:l="sap.ui.layout" xmlns:f="sap.ui.layout.form">
-    <Page id="page" title="{i18n>PAGE_TITLE_NEW_PROJECT}" showFooter="true" floatingFooter="true" showHeader="true">
+    <Page id="page" showHeader="false" showFooter="true" floatingFooter="true">
         <content>
             <VBox id="formContainer" fitContainer="true">
+                <OverflowToolbar class="sapUiSmallMarginTop sapUiSmallMarginBegin sapUiSmallMarginEnd" design="Transparent" height="3rem">
+                    <Title text="{i18n>PAGE_TITLE_NEW_PROJECT}"/>
+                </OverflowToolbar>
                 <MessageStrip class="sapUiSmallMarginTop sapUiSmallMarginBegin sapUiSmallMarginEnd" showIcon="true" state="None" text="{i18n>MSG_STRIP_METHOD_CHANGE}"/>
                 <MessageStrip visible="{view>/validationError}" class="sapUiSmallMarginBegin sapUiSmallMarginEnd sapUiTinyMarginTop" showIcon="true" type="Error" text="{i18n>MSG_STRIP_VALIDATION_ERROR}"/>
                 <f:SimpleForm layout="ResponsiveGridLayout" emptySpanL="3" editable="true">

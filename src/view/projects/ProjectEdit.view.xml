@@ -1,8 +1,11 @@
 <!DOCTYPE xml>
 <core:View xmlns:core="sap.ui.core" controllerName="geosort.controller.projects.ProjectEdit" xmlns="sap.m" xmlns:u="sap.ui.unified" xmlns:l="sap.ui.layout" xmlns:f="sap.ui.layout.form">
-    <Page id="page" title="{title}" showFooter="true" floatingFooter="true" showHeader="true">
+    <Page id="page" showFooter="true" floatingFooter="true" showHeader="false">
         <content>
-            <VBox id="formContainer" fitContainer="true">
+            <VBox id="formContainer" class="sapUiContentPadding" fitContainer="true">
+                <OverflowToolbar class="sapUiSmallMarginTop sapUiSmallMarginBegin sapUiSmallMarginEnd" design="Transparent" height="3rem">
+                    <Title text="{path: 'title', mode: 'OneTime'}"/>
+                </OverflowToolbar>
                 <MessageStrip class="sapUiSmallMarginTop sapUiSmallMarginBegin sapUiSmallMarginEnd" showIcon="true" type="None" text="{i18n>MSG_STRIP_METHOD_CHANGE}"/>
                 <MessageStrip visible="{view>/dataChanged}" class="sapUiSmallMarginBegin sapUiSmallMarginEnd sapUiTinyMarginTop" showIcon="true" type="Warning" text="{i18n>MSG_STRIP_DATA_CHANGED}"/>
                 <MessageStrip visible="{view>/validationError}" class="sapUiSmallMarginBegin sapUiSmallMarginEnd sapUiTinyMarginTop" showIcon="true" type="Error" text="{i18n>MSG_STRIP_VALIDATION_ERROR}"/>

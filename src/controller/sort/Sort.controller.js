@@ -44,6 +44,23 @@ sap.ui.define([
             if (!this.getOwnerComponent().getModel('app').getProperty('/user/sortSettings')) {
                 this.getOwnerComponent().getModel('app').setProperty('/user/sortSettings', DatabaseHelper.getEmptySettings())
             }
+
+            this.router.getRoute('sort').attachBeforeMatched(this.onBeforeRouteMatched, this)
+        },
+
+        onBeforeRouteMatched: function (evt) {
+            const query = evt.getParameter('arguments')['?query']
+
+            if (query && query.extend) {
+                let listItems = this.getView().byId('projectsList').getItems()
+                
+                listItems = listItems.filter(listItem => !(listItem instanceof GroupHeaderListItem))
+                listItems.forEach(listItem => {
+                    if (query.extend === listItem.getBindingContext('projects').getPath().slice(1)) {
+                        listItem.getContent()[0].setExpanded(!listItem.getContent()[0].getExpanded())
+                    }
+                })
+            }
         },
 
         onSaveSettings: async function (evt) {
@@ -58,11 +75,14 @@ sap.ui.define([
             }
         },
 
-        onProjectPress: function (evt) {
+        onEditProject: function (evt) {
             const projectId = evt.getSource().getBindingContext('projects').getPath().slice(1)
 
-            this.router.navTo('projectDetail', {
-                id: projectId
+            this.router.navTo('projectEdit', {
+                id: projectId,
+                query: {
+                    origin: 'sort'
+                }
             })
         },
 
