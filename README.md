@@ -16,7 +16,7 @@ In GitHub Desktop den richtigen Branch/Zweig auswählen.
 Nachdem Änderungen gespeichert wurden, sollte das Programm automatisch neu geladen werden.
 
 # Packen
-Um das Projekt in eine .exe zu packen: In der Konsole "npm run package win" ausführen
+Um das Projekt in eine .exe zu packen: In der Konsole "npm run package-win" ausführen
 
 # Editor 
 Visual Studio Code: https://code.visualstudio.com/
