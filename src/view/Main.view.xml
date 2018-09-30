@@ -43,10 +43,12 @@
                         <tnt:NavigationListItem key="home" visible="false" text="{i18n>NAV_HOME}" icon="sap-icon://home"/>
                         <tnt:NavigationListItem key="login" visible="{= !${app>/isLoggedIn} }" text="{i18n>NAV_LOGIN}" icon="sap-icon://visits"/>
                         <tnt:NavigationListItem key="projects" visible="{app>/isLoggedIn}" text="{i18n>NAV_PROJECTS}" icon="sap-icon://list"/>
+                        <tnt:NavigationListItem key="bauleiter" visible="{app>/isLoggedIn}" text="{i18n>NAV_BAULEITER}" icon="sap-icon://list"/>
                         <tnt:NavigationListItem key="sort" visible="{app>/isLoggedIn}" text="{i18n>NAV_GEOSORT}" icon="sap-icon://locate-me"/>
                         <tnt:NavigationListItem key="admin" visible="{= ${app>/isLoggedIn} &amp;&amp; ${app>/user/role} === 'admin'}" text="{i18n>NAV_ADMIN}" icon="sap-icon://settings">
                             <tnt:NavigationListItem key="adminUsers" text="{i18n>NAV_USER_MAINTENANCE}" icon="sap-icon://role"/>
                             <tnt:NavigationListItem key="adminProjects" text="{i18n>NAV_ADMIN_PROJECTS}" icon="sap-icon://show-edit"/>
+                            <tnt:NavigationListItem key="adminBauleiter" text="{i18n>NAV_ADMIN_BAULEITER}" icon="sap-icon://show-edit"/>
                         </tnt:NavigationListItem>
                     </tnt:NavigationList>
                 </tnt:item>
