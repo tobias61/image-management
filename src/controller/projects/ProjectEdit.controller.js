@@ -41,10 +41,29 @@ sap.ui.define([
             const args = evt.getParameter('arguments')
 
             this.getView().bindElement('/' + args.id)
+            
+            let project = this.getView().getBindingContext().getObject()
+            if (!project.constructionSite) {
+                project.constructionSite = {
+                    street: null,
+                    streetNo: null,
+                    zipCode: null,
+                    city: null,
+                    Flur: null,
+                    Flurstück: null,
+                    Fläche: null,
+                    Gemarkung: null,
+                    Gemeinde: null
+                }
+            }
+            if (!project.imagePath) {
+                project.imagePath = null
+            }
+
             this.getView().getModel().attachPropertyChange(function (evt) {
                 const property = evt.getParameter('path')
 
-				if (property !== 'title' && property !== 'directory' && property !== 'locationMethod') {
+				if (property !== 'title' && property !== 'directory' && property !== 'locationMethod' && !property.includes('constructionSite')) {
 					this.getView().getModel('view').setProperty('/dataChanged', true)
                 }
             }.bind(this))

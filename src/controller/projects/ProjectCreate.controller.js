@@ -83,8 +83,9 @@ sap.ui.define([
 				Fläche: null,
 				Gemarkung: null,
 				Gemeinde: null
-
             })
+
+            this.constructionSiteTemplate = this.getView().getModel('constructionSite').getProperty('/')
 		},
 
 		onCancelCreation: function () {
@@ -143,7 +144,8 @@ sap.ui.define([
 			}
 
 			if (project.locationMethod === 0) {
-				project.address = this.getView().getModel('address').getProperty('/')
+                project.address = this.getView().getModel('address').getProperty('/')
+                project.constructionSite = this.getView().getModel('constructionSite').getProperty('/')
 
 				try {
 					project.gps = await this.getGPS(project.address)
@@ -151,7 +153,8 @@ sap.ui.define([
 					/** TODO: Implement notification when failed */
 				}
 			} else if (project.locationMethod === 1) {
-				project.gps = this.getView().getModel('gps').getProperty('/');
+                project.gps = this.getView().getModel('gps').getProperty('/')
+                project.constructionSite = this.constructionSiteTemplate
 
 				try {
 					project.address = await this.getAddress(project.gps)
@@ -159,19 +162,10 @@ sap.ui.define([
 					/** TODO: Implement notification if dailed */
 				}
 
-			} else if (project.locationMethod === 3) {
-				project.gps = this.getView().getModel('constructionSite').getProperty('/');
-
-				try {
-					constructinSite.address = await this.getAddress(project.gps)
-				} catch (error) {
-					/** TODO: Implement notification if dailed */
-				}
-
-
 			} else if (project.locationMethod === 2) {
-				const path = this.getView().getModel('image').getProperty('/imagePath')
+                const path = this.getView().getModel('image').getProperty('/imagePath')
 
+                project.constructionSite = this.constructionSiteTemplate
 				project.imagePath = path
 
 				try {
@@ -186,7 +180,7 @@ sap.ui.define([
 				} catch (error) {
 					/** TODO: Implement notification if dailed */
 				}
-			}
+            }
 
 			try {
                 const response = await DatabaseHelper.saveProject(project)
@@ -196,7 +190,8 @@ sap.ui.define([
                         extend: response.id
                     }
                 })
-			} catch (error) {
+            } catch (error) {
+                console.log(error)
 				NotificationHelper.error(this.i18n.getText('MSG_ADD_PROJECT_ERROR'))
 			}
 			sap.ui.core.BusyIndicator.hide()

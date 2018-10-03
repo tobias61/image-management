@@ -194,7 +194,7 @@ sap.ui.define([
                 panel.setExpanded(false)
                 if (evt && evt.getSource().getParent().getParent() !== listItem) listItem.setUnread(false)
             })
-
+            
             if (evt) evt.getSource().getParent().setExpanded(!evt.getSource().getParent().getExpanded())
             else if (id) {
                 listItems.forEach(listItem => {

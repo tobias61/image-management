@@ -54,7 +54,9 @@ sap.ui.define([
         directory: null,
         locationMethod: 0,
         address: null,
-        gps: null
+        gps: null,
+        constructionSite: null,
+        imagePath: null
     }
 
     const projectsModel = new JSONModel()
