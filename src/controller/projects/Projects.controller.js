@@ -22,18 +22,18 @@ sap.ui.define([
 
             this.getView().setModel(DatabaseHelper.getProjects())
             this.getView().setModel(DatabaseHelper.getUsers(), 'users')
+            
+            DatabaseHelper.attachProjectsListener(this.getOwnerComponent().getModel('app').getProperty('/user/id'), function (snapshot) {
+                this.getView().setBusy(true)
 
-			DatabaseHelper.attachProjectsListener(this.getOwnerComponent().getModel('app').getProperty('/user/id'), function (snapshot) {
-				this.getView().setBusy(true)
-
-				let projects = {}
-				snapshot.forEach(doc => {
-					projects[doc.id] = doc.data()
+                let projects = {}
+                snapshot.forEach(doc => {
+                    projects[doc.id] = doc.data()
                 })
 
                 DatabaseHelper.getProjects().setData(projects)
 
-				this.getView().setBusy(false)
+                this.getView().setBusy(false)
             }.bind(this))
 
             DatabaseHelper.attachUsersListener(function (snapshot) {
