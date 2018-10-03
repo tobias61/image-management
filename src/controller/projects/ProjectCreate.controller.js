@@ -26,6 +26,7 @@ sap.ui.define([
 			this.getView().setModel(new JSONModel(), 'gps')
 			this.getView().setModel(new JSONModel(), 'image')
 			this.getView().setModel(new JSONModel(), 'view')
+			this.getView().setModel(new JSONModel(), 'constructionSite')
 
 			this.router.getRoute('projectCreate').attachBeforeMatched(this.onBeforeRouteMatched, this)
 			this.router.getRoute('projectCreate').attachMatched(this.onRouteMatched, this)
@@ -37,6 +38,7 @@ sap.ui.define([
 			formControls.push(this.getView().getControlsByFieldGroupId('fgAddress'))
 			formControls.push(this.getView().getControlsByFieldGroupId('fgGps'))
 			formControls.push(this.getView().getControlsByFieldGroupId('fgImage'))
+			formControls.push(this.getView().getControlsByFieldGroupId('fgConstructionSite'))
 			formControls = _.flatten(formControls)
 
 			formControls.forEach(control => {
@@ -69,6 +71,19 @@ sap.ui.define([
 
 			this.getView().getModel('view').setData({
                 validationError: false
+			})
+			
+			this.getView().getModel('constructionSite').setData({
+				street: null,
+				streetNo: null,
+				zipCode: null,
+				city: null,
+				Flur: null,
+				Flurstück: null,
+				Fläche: null,
+				Gemarkung: null,
+				Gemeinde: null
+
             })
 		},
 
@@ -143,6 +158,17 @@ sap.ui.define([
 				} catch (error) {
 					/** TODO: Implement notification if dailed */
 				}
+
+			} else if (project.locationMethod === 3) {
+				project.gps = this.getView().getModel('constructionSite').getProperty('/');
+
+				try {
+					constructinSite.address = await this.getAddress(project.gps)
+				} catch (error) {
+					/** TODO: Implement notification if dailed */
+				}
+
+
 			} else if (project.locationMethod === 2) {
 				const path = this.getView().getModel('image').getProperty('/imagePath')
 
@@ -238,6 +264,7 @@ sap.ui.define([
 			if (project.locationMethod === 0) formControls.push(this.getView().getControlsByFieldGroupId('fgAddress'))
 			if (project.locationMethod === 1) formControls.push(this.getView().getControlsByFieldGroupId('fgGps'))
 			if (project.locationMethod === 2) formControls.push(this.getView().getControlsByFieldGroupId('fgImage'))
+			if (project.locationMethod === 3) formControls.push(this.getView().getControlsByFieldGroupId('fgConstructionSite'))
 			formControls = _.flatten(formControls)
 
 			let validationErrorCounter = 0

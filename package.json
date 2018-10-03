@@ -35,5 +35,13 @@
     "express": "^4.16.3",
     "googleapis": "^32.0.0",
     "moment": "^2.22.2"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tobias61/image-management.git"
+  },
+  "bugs": {
+    "url": "https://github.com/tobias61/image-management/issues"
+  },
+  "homepage": "https://github.com/tobias61/image-management#readme"
 }

@@ -211,6 +211,7 @@ sap.ui.define([
 			if (project.locationMethod === 0) formControls.push(this.getView().getControlsByFieldGroupId('fgAddress'))
 			if (project.locationMethod === 1) formControls.push(this.getView().getControlsByFieldGroupId('fgGps'))
 			if (project.locationMethod === 2) formControls.push(this.getView().getControlsByFieldGroupId('fgImage'))
+			if (project.locationMethod === 3) formControls.push(this.getView().getControlsByFieldGroupId('fgConstructionSite'))
 			formControls = _.flatten(formControls)
 
 			let validationErrorCounter = 0

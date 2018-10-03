@@ -38,7 +38,7 @@
                         <Input fieldGroupIds="fgAddress" value="{path: 'address/street', type: 'sap.ui.model.type.String', constraints: {minLength: 3, search: '^[öÖäÄüÜßa-zA-Z -]*$'}}"/>
                         <Input fieldGroupIds="fgAddress" value="{path: 'address/streetNo', type: 'sap.ui.model.type.Integer', constraints: {minimum: 1}}">
                             <layoutData>
-                                <l:GridData span="L1 M2" />
+                                <l:GridData span="L1 M5" />
                             </layoutData>
                         </Input>
                         <Label text="{i18n>LABEL_ZIP_AND_CITY}" />
@@ -48,6 +48,27 @@
                             </layoutData>
                         </Input>
                         <Input fieldGroupIds="fgAddress" value="{path: 'address/city', type: 'sap.ui.model.type.String', constraints: {minLength: 3, search: '^[öÖäÄüÜßa-zA-Z -]*$'}}"/>
+
+                        <core:Title text="{i18n>FORM_CONT_TITLE_BAUSTELLEN_INFO}" />
+                        <Label text="{i18n>LABEL_BAUSTELLE_STREET_AND_NO}" />
+                        <Input fieldGroupIds="fgConstructionSite" value="{path: 'constructionSite/street', type: 'sap.ui.model.type.String', constraints: {minLength: 3, search: '^[öÖäÄüÜßa-zA-Z -]*$'}}"/>
+                        <Input fieldGroupIds="fgConstructionSite" value="{path: 'constructionSite/streetNo', type: 'sap.ui.model.type.Integer', constraints: {minimum: 1}}">
+                            <layoutData>
+                                <l:GridData span="L1 M2" />
+                            </layoutData>
+                        </Input>
+                        <Label text="{i18n>LABEL_BAUSTELLE_ZIP_AND_CITY}" />
+                        <Input fieldGroupIds="fgConstructionSite" value="{path: 'constructionSite/zipCode', type: 'sap.ui.model.type.String', constraints: {minLength: 5, maxLength: 5, search: '^[0-9]*$'}}">
+                            <layoutData>
+                                <l:GridData span="L1 M2" />
+                            </layoutData>
+                        </Input>
+                        <Input fieldGroupIds="fgConstructionSite" value="{path: 'constructionSite/city', type: 'sap.ui.model.type.String', constraints: {minLength: 3, search: '^[öÖäÄüÜßa-zA-Z -]*$'}}"/>
+
+
+
+
+
                     </f:content>
                 </f:SimpleForm>
                 <f:SimpleForm visible="{= ${locationMethod} === 1}" layout="ResponsiveGridLayout" emptySpanL="3" editable="true">
