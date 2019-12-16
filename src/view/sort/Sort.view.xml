@@ -24,13 +24,16 @@
                             <CheckBox selected="{app>/user/sortSettings/deleteFlag}"/>
                         </f:content>
                     </f:SimpleForm>
+                    <OverflowToolbar design="Transparent" height="3rem">
+                        <Title text="{i18n>LIST_TITLE_PROJECTS}"/>
+                    </OverflowToolbar>
+                    <MessageStrip class="sapUiSmallMarginTop" visible="{path: 'projects>/', formatter: '.formatter.directoryMessageStrip'}" text="{i18n>MSG_STRIP_DIRECTORIES_MISSING}" type="Warning"/>
                     <List
                         id="projectsList"
                         busyIndicatorDelay="0"
                         backgroundDesign="Translucent"
                         noDataText="{i18n>TXT_NO_PROJECTS}"
                         showSeparators="All"
-                        headerText="{i18n>LIST_TITLE_PROJECTS}"
                         items="{
                             path: 'projects>/',
                             sorter: [{
@@ -50,7 +53,8 @@
                                         <content>
                                             <VBox>
                                                 <Title text="{projects>title}"/>
-                                                <Text text="{projects>directory}"/>
+                                                <Text text="{projects>directory}" visible="{= ${projects>directory} !== null}"/>
+                                                <ObjectStatus text="{i18n>TXT_MISSING_DIRECTORY}" state="Warning" visible="{= ${projects>directory} === null}"/>
                                             </VBox>
                                             <ToolbarSpacer/>
                                             <Button text="{i18n>BUT_EDIT}" type="Transparent" press="onEditProject"/>

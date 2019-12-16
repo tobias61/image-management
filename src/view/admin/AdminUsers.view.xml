@@ -53,7 +53,7 @@
                                         <core:Item key="admin" text="{i18n>LABEL_ADMIN}"/>
                                         <core:Item key="user" text="{i18n>LABEL_USER}"/>
                                     </Select>
-                                    <Button text="{i18n>BUT_DELETE}" enabled="false" type="Transparent"/>
+                                    <Button text="{i18n>BUT_DELETE}" enabled="{= ${name} !== ${app>/user/name} &amp;&amp; (${app>/user/superuser} || (${app>/user/role} === 'admin' &amp;&amp; ${role} === 'user'))}" press="onRemoveUser" type="Transparent"/>
                                 </HBox>
                             </HBox>
                         </CustomListItem>

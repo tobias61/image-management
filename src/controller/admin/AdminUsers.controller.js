@@ -48,6 +48,42 @@ sap.ui.define([
 				NotificationHelper.error(this.i18n.getText('MSG_UPDATE_USER_ERROR'))
 			}
 			sap.ui.core.BusyIndicator.hide()
+    },
+    
+    onRemoveUser: async function (evt) {
+			sap.ui.core.BusyIndicator.show(0)
+
+      if (!this.userId) this.userId = this.getOwnerComponent().getModel('app').getProperty('/user/id')
+				
+			if (!this.deleteDialog) {
+				this.deleteDialog = sap.ui.xmlfragment('geosort.view.admin.DeleteUserDialog', this)
+				this.getView().addDependent(this.deleteDialog)
+			}
+
+			if (this.deleteDialog.isOpen() === false) {
+				this.deleteDialog.open()
+				return;
+			}
+
+			this.deleteDialog.close()
+
+			if (this.userId) {
+				try {
+					await DatabaseHelper.removeUser(this.userId)
+					NotificationHelper.toast(this.i18n.getText('MSG_REMOVE_PROJECT_SUCCESS'))
+				} catch (error) {
+					NotificationHelper.error(this.i18n.getText('MSG_REMOVE_PROJECT_ERROR'))
+				}
+				this.userId = null
+			}
+
+			sap.ui.core.BusyIndicator.hide()
+    },
+
+    onCloseDialog: function (evt) {
+      this.userId = null
+      evt.getSource().getParent().close()
+      sap.ui.core.BusyIndicator.hide()
 		},
 
 		onSearchUsers: function (evt) {

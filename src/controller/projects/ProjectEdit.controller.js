@@ -122,6 +122,7 @@ sap.ui.define([
                     })
                 }
             } catch (error) {
+                console.log(error)
 				NotificationHelper.error(this.i18n.getText('MSG_UPDATE_PROJECT_ERROR'))
 			}
 			sap.ui.core.BusyIndicator.hide()

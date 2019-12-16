@@ -2,6 +2,13 @@ jQuery.sap.require("sap.ui.core.format.DateFormat");
 sap.ui.define([], function () {
 	"use strict";
     return {
+
+        directoryMessageStrip: function (projects) {
+            for (let project in projects) {
+                if (projects[project].directory === null) return true
+            }
+            return false
+        },
         
         downloadInfoState: function (count, failedCount, matchedCount) {
             if (failedCount > 0) return 'Error'

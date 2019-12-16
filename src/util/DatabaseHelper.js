@@ -23,6 +23,10 @@ sap.ui.define([
         })
     }
 
+    DatabaseHelper.removeUser = (userId) => {
+      return db.collection('projects').doc(userId).delete()
+    }
+
     DatabaseHelper.storeUser = async (driveUser) => {
         const userRef = db.collection('users').doc(driveUser.permissionId)
 

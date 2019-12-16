@@ -10,7 +10,7 @@
     "pack": "electron-builder --dir",
     "dist": "electron-builder",
     "package-mac": "electron-packager . --overwrite --platform=darwin --arch=x64 --icon=assets/icons/mac/icon.icns --prune=true --out=release-builds",
-    "package-win": "electron-packager . baudirekt-image-management --overwrite --asar=true --platform=win32 --arch=ia32 --icon=assets/icons/icon.ico --prune=true --out=release-builds --version-string.CompanyName=CE --version-string.FileDescription=CE --version-string.ProductName=\"Baudirekt Image Management\"",
+    "package-win": "electron-packager . 'Baudirekt Image Management' --overwrite --asar=true --platform=win32 --arch=ia32 --icon=assets/icons/favicon.ico --prune=true --out=release-builds --version-string.CompanyName=CE --version-string.FileDescription=CE --version-string.ProductName='Baudirekt Image Management'",
     "package-linux": "electron-packager . electron-tutorial-app --overwrite --asar=true --platform=linux --arch=x64 --icon=assets/icons/png/1024x1024.png --prune=true --out=release-builds"
   },
   "build": {

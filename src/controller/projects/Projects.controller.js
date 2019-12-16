@@ -55,7 +55,7 @@ sap.ui.define([
             const query = evt.getParameter('arguments')['?query']
 
             if (query && query.extend) {
-                this.onExpandProject(null, query.extend, true)
+                this.onExpandProject(null, query.extend)
             }
         },
         
@@ -75,7 +75,7 @@ sap.ui.define([
 				NotificationHelper.error(this.i18n.getText('MSG_UPDATE_PROJECT_ERROR'))
 			}
             DatabaseHelper.getProjects().updateBindings(true)
-            this.onExpandProject(null, projectId, true)
+            this.onExpandProject(null, projectId)
 			sap.ui.core.BusyIndicator.hide()
         },
         
@@ -95,7 +95,7 @@ sap.ui.define([
 				NotificationHelper.error(this.i18n.getText('MSG_UPDATE_PROJECT_ERROR'))
 			}
             DatabaseHelper.getProjects().updateBindings(true)
-            this.onExpandProject(null, projectId, true)
+            this.onExpandProject(null, projectId)
 			sap.ui.core.BusyIndicator.hide()
         },
 
@@ -128,9 +128,10 @@ sap.ui.define([
 			const userId = evt.getParameter('selectedItem').getBindingContext('users').getPath().slice(1)
 			const project = this.getView().getModel().getProperty(`/${this.projectId}`)
 
-			project.user = userId
+            project.user = userId
+            project.directory = null
 			try {
-				await DatabaseHelper.updateProject(project, this.projectId, ['user'])
+				await DatabaseHelper.updateProject(project, this.projectId, ['user', 'directory'])
 				NotificationHelper.toast(this.i18n.getText('MSG_UPDATE_PROJECT_SUCCESS'))
 			} catch (error) {
 				NotificationHelper.error(this.i18n.getText('MSG_UPDATE_PROJECT_ERROR'))
@@ -147,7 +148,9 @@ sap.ui.define([
 		},
         
         onCloseDialog: function (evt) {
-			this.projectId = null
+          this.projectId = null
+          evt.getSource().getParent().close()
+          sap.ui.core.BusyIndicator.hide()
 
 			if (evt.getSource().getBinding('items')) evt.getSource().getBinding('items').filter([])
 		},
@@ -180,33 +183,37 @@ sap.ui.define([
 			}
 
 			sap.ui.core.BusyIndicator.hide()
-		},
-
-        onExpandProject: function (evt, id, unread) {
+        },
+        
+        onPanelExpanding: function (evt) {
             let listItems = this.getView().byId('projectsList').getItems()
 
             listItems = listItems.filter(listItem => !(listItem instanceof GroupHeaderListItem))
 
-            let listItemsCopy = listItems.filter(listItem => listItem.getContent()[0].getExpanded())
-            listItemsCopy.forEach(listItem => {
-                const panel = listItem.getContent()[0]
+            if (evt.getParameter('expand')) {
+                listItems.forEach(listItem => {
+                    if (listItem.getContent()[0] !== evt.getSource()) listItem.getContent()[0].setExpanded(false)
+                })
+            }
+        },
 
-                panel.setExpanded(false)
-                if (evt && evt.getSource().getParent().getParent() !== listItem) listItem.setUnread(false)
-            })
+        onExpandProject: function (evt, id) {
+            let listItems = this.getView().byId('projectsList').getItems()
+
+            listItems = listItems.filter(listItem => !(listItem instanceof GroupHeaderListItem))
+            // listItems.forEach(listItem => {
+                // if (listItem.getContent()[0].getExpanded() == false) listItem.setUnread(false)
+            // })
 
             if (evt) evt.getSource().getParent().setExpanded(!evt.getSource().getParent().getExpanded())
             else if (id) {
                 listItems.forEach(listItem => {
-                    if (id === listItem.getBindingContext().getPath().slice(1)) {
+                    if (listItem.getBindingContext().getPath().slice(1) === id) {
+                        // listItem.setUnread(true)
                         listItem.getContent()[0].setExpanded(true)
-
-                        if (unread) listItem.setUnread(true)
                     }
                 })
             }
-
-
         },
         
         onSearchProjects: function (evt) {

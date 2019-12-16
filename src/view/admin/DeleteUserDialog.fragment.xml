@@ -1,0 +1,12 @@
+<!DOCTYPE xml>
+<core:FragmentDefinition xmlns:core="sap.ui.core" xmlns="sap.m">
+    <Dialog type="Message" title="{i18n>DIALOG_TITLE_DELETE_USER}">
+        <content>
+            <Text text="{i18n>TXT_DELETE_USER}"/>
+        </content>
+        <buttons>
+            <Button text="{i18n>BUT_CONFIRM}" press="onRemoveUser"/>
+            <Button text="{i18n>BUT_CANCEL}" press="onCloseDialog"/>
+        </buttons>
+    </Dialog>
+</core:FragmentDefinition>

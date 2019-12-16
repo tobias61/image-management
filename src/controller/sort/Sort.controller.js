@@ -52,14 +52,7 @@ sap.ui.define([
             const query = evt.getParameter('arguments')['?query']
 
             if (query && query.extend) {
-                let listItems = this.getView().byId('projectsList').getItems()
-                
-                listItems = listItems.filter(listItem => !(listItem instanceof GroupHeaderListItem))
-                listItems.forEach(listItem => {
-                    if (query.extend === listItem.getBindingContext('projects').getPath().slice(1)) {
-                        listItem.getContent()[0].setExpanded(!listItem.getContent()[0].getExpanded())
-                    }
-                })
+                this.onExpandProject(null, query.extend)
             }
         },
 
@@ -168,22 +161,35 @@ sap.ui.define([
             evt.getSource().getParent().close()
         },
 
-        onExpandProject: function (evt) {
-			evt.getSource().getParent().setExpanded(!evt.getSource().getParent().getExpanded())
+        onExpandProject: function (evt, id) {
+            let listItems = this.getView().byId('projectsList').getItems()
+
+            listItems = listItems.filter(listItem => !(listItem instanceof GroupHeaderListItem))
+            // listItems.forEach(listItem => {
+                // if (listItem.getContent()[0].getExpanded() == false) listItem.setUnread(false)
+            // })
+
+            if (evt) evt.getSource().getParent().setExpanded(!evt.getSource().getParent().getExpanded())
+            else if (id) {
+                listItems.forEach(listItem => {
+                    if (listItem.getBindingContext('projects').getPath().slice(1) === id) {
+                        // listItem.setUnread(true)
+                        listItem.getContent()[0].setExpanded(true)
+                    }
+                })
+            }
         },
         
         onPanelExpanding: function (evt) {
-			if (evt.getParameter('expand')) {
-				let listItems = this.getView().byId('projectsList').getItems()
+            let listItems = this.getView().byId('projectsList').getItems()
 
-				listItems = listItems.filter(listItem => !(listItem instanceof GroupHeaderListItem))
-				listItems = listItems.filter(listItem => listItem.getContent()[0].getExpanded())
-				listItems.forEach(listItem => {
-					const panel = listItem.getContent()[0]
+            listItems = listItems.filter(listItem => !(listItem instanceof GroupHeaderListItem))
 
-					if (evt.getSource() !== panel) panel.setExpanded(!panel.getExpanded())
-				})
-			}
+            if (evt.getParameter('expand')) {
+                listItems.forEach(listItem => {
+                    if (listItem.getContent()[0] !== evt.getSource()) listItem.getContent()[0].setExpanded(false)
+                })
+            }
 		},
 
         getGroupHeader: function (group) {

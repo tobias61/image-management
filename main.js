@@ -4,12 +4,12 @@ const url = require('url')
 
 // require('dotenv').config()
 
-const electron = require('electron')
+// const electron = require('electron')
 
-require('electron-reload')(__dirname, {
-    // Note that the path to electron may vary according to the main file
-    electron: require(`${__dirname}/node_modules/electron`)
-});
+// require('electron-reload')(__dirname, {
+//     // Note that the path to electron may vary according to the main file
+//     electron: require(`${__dirname}/node_modules/electron`)
+// });
 
 let win
 
@@ -17,11 +17,12 @@ function createWindow() {
     win = new BrowserWindow({
         width: 1600,
         height: 1000,
-        frame: false,
+        frame: true,
         show: true,
         center: true,
         darkTheme: true,
-        backgroundColor: '#2f3c48'
+      backgroundColor: '#2f3c48',
+      icon: path.join(__dirname, 'assets/icons/favicon.ico')
     })
 
     win.setMenu(null);
@@ -36,7 +37,7 @@ function createWindow() {
         win.show()
     })
 
-    win.webContents.openDevTools()
+    // win.webContents.openDevTools()
 
     // win.on('closed', () => {
     //     win = null

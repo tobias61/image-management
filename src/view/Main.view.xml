@@ -28,8 +28,8 @@
                 </Text> -->
                 <!-- <ToolbarSpacer/> -->
                 <!-- <Text visible="{= !${app>/isLoggedIn} }" text="{i18n>TXT_LOGIN_REQUIRED}"/> -->
-				<Button visible="{app>/isLoggedIn}" text="{app>/user/name}" type="Transparent" press="onUserPress"/>
-                <OverflowToolbarButton class="sapUiSmallMarginBegin" text="{i18n>BUT_QUIT}" press="onQuitApp" type="Transparent" icon="sap-icon://decline">
+				<Button visible="{app>/isLoggedIn}" text="{i18n>TXT_HELLO}, {app>/user/name}!" type="Transparent" />
+                <OverflowToolbarButton  visible="{app>/isLoggedIn}" text="{i18n>BUT_LOGOUT}" press="onLogout" type="Transparent" icon="sap-icon://log">
                 	<layoutData>
 						<OverflowToolbarLayoutData priority="NeverOverflow" />
 					</layoutData>

@@ -168,14 +168,16 @@ sap.ui.define([
 			const userId = evt.getParameter('selectedItem').getBindingContext('users').getPath().slice(1)
 			const project = this.getView().getModel().getProperty(`/${this.projectId}`)
 
-			project.user = userId
+            project.user = userId
+            project.directory = null
 			try {
-				await DatabaseHelper.updateProject(project, this.projectId, ['user'])
+				await DatabaseHelper.updateProject(project, this.projectId, ['user', 'directory'])
 				NotificationHelper.toast(this.i18n.getText('MSG_UPDATE_PROJECT_SUCCESS'))
 			} catch (error) {
 				NotificationHelper.error(this.i18n.getText('MSG_UPDATE_PROJECT_ERROR'))
 			}
-			this.projectId = null
+            DatabaseHelper.getAdminProjects().updateBindings(true)
+            this.projectId = null
 			sap.ui.core.BusyIndicator.hide()
 		},
 
@@ -187,7 +189,9 @@ sap.ui.define([
 		},
 
 		onCloseDialog: function (evt) {
-			this.projectId = null
+      this.projectId = null
+      evt.getSource().getParent().close()
+      sap.ui.core.BusyIndicator.hide()
 
 			if (evt.getSource().getBinding('items')) evt.getSource().getBinding('items').filter([])
 		},
